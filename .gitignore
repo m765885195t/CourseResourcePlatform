@@ -1,3 +1,36 @@
+HELP.md
+.gradle
+/build/
+/log/
+/gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
+
 # Compiled class file
 *.class
 
@@ -18,23 +51,3 @@
 *.zip
 *.tar.gz
 *.rar
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-# 项目文件
-.gradle
-/build/
-/log/
-/out/
-/lib/
-/gradle/
-!gradle/wrapper/gradle-wrapper.jar
-*/application.properties
-src/main/webapp/
-
-
-
