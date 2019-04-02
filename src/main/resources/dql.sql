@@ -1,0 +1,1 @@
+insert into crp_user(user_id) values ('1');
