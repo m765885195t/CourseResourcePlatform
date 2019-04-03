@@ -25,13 +25,27 @@ repositories {
 
 // 依赖的jar包
 dependencies {
+    // 在gradle3.0中，compile依赖关系已被弃用，被implementation和api替代，
+    // compile: 使用该方式依赖的库将会参与编译和打包。
+    // api: 跟2.x版本的 compile完全相同, 该依赖方式会传递所依赖的库，当其他module依赖了该module时，可以使用该module下使用api依赖的库。
+    // implementation: 该依赖方式所依赖的库不会传递，只会在当前module中生效。
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.0.0'
+    // 相比api减少依赖传递性,避免跨依赖调用
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // 只编译依赖(在编译时所需的依赖关系，但在运行时不需要)
     compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // 使用测试数据库
-    compile group: 'com.h2database', name: 'h2', version: '1.4.198'
+    // 工具集合相关类
+    implementation 'com.google.guava:guava:26.0-jre'
+    implementation 'com.alibaba:fastjson:1.2.41'
+    implementation 'org.apache.commons:commons-lang3:3.5'
+    // 编译时注解 编译期间根据注解自动生成代码
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // 数据库
+    implementation 'com.h2database:h2:1.4.198'
+    implementation 'mysql:mysql-connector-java'
 }
