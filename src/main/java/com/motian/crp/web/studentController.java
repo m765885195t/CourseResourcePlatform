@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 /**
- * @Author: gongzhanjing
- * @Email: gongzhanjing@xiyoulinux.org
+ * @Author: motian
+ * @Email: motian@xiyoulinux.org
  */
 @RestController
 @RequestMapping("/test")

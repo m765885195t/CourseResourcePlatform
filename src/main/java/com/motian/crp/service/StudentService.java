@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @Author: gongzhanjing
- * @Email: gongzhanjing@xiyoulinux.org
+ * @Author: motian
+ * @Email: motian@xiyoulinux.org
  */
 @Service
 public class StudentService {

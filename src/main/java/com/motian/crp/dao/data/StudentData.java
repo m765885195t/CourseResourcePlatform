@@ -10,8 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @Author: gongzhanjing
- * @Email: gongzhanjing@xiyoulinux.org
+ * @Author: motian
+ * @Email: motian@xiyoulinux.org
  */
 
 @Entity
