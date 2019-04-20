@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @Email: motian@xiyoulinux.org
  */
 
-public interface StudentRepository extends JpaRepository<StudentData, String> {
+public interface StudentRepository extends JpaRepository<StudentData, Long> {
 }

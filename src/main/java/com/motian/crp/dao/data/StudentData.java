@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -22,6 +24,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 public class StudentData {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long studentId;
 
     private String studentName;
