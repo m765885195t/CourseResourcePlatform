@@ -45,6 +45,9 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.5'
     // 编译时注解 编译期间根据注解自动生成代码
     annotationProcessor 'org.projectlombok:lombok'
+    //swagger
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+    implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
     // 数据库
     implementation 'com.h2database:h2:1.4.198'

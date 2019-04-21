@@ -4,8 +4,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication(scanBasePackages = "com.motian.crp")
+import static com.motian.crp.constant.CrpConst.ProjectStructure.BASE_PACKAGE_SPACE;
+
+@EnableJpaAuditing
+@SpringBootApplication(scanBasePackages = BASE_PACKAGE_SPACE)
 public class CrpApplication extends SpringBootServletInitializer {
 
     @Override
