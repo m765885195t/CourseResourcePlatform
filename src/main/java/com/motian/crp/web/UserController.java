@@ -35,7 +35,6 @@ public class UserController {
 
     @PostMapping(value = "/unsubscribe")
     public Map<String, Object> unsubscribe(@RequestParam(value = "id") long id) {
-
         service.unsubscribe(id);
         Map<String, Object> model = Maps.newHashMap();
         model.put(RESULT, Boolean.TRUE);
