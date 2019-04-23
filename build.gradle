@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // 相比api减少依赖传递性,避免跨依赖调用
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-freemarker'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     // 只编译依赖(在编译时所需的依赖关系，但在运行时不需要)
     compileOnly 'org.projectlombok:lombok'

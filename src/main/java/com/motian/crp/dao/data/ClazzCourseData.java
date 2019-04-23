@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -24,6 +23,10 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "ClazzCourseData", description = "班课信息")
 public class ClazzCourseData extends BaseData {
+
+    @ApiModelProperty(value = "创建者id")
+    private String teacherId;
+
     @ApiModelProperty(value = "班课号")
     private long clazzCourseId;
 
@@ -33,7 +36,4 @@ public class ClazzCourseData extends BaseData {
     @ApiModelProperty(value = "课程名")
     private String courseName;
 
-
-    @ApiModelProperty(value = "封面图")
-    private String cover = StringUtils.EMPTY;
 }

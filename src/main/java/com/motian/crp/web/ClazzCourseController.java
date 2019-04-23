@@ -25,12 +25,12 @@ public class ClazzCourseController {
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(
+            @RequestParam(value = "teacherId") String teacherId,
             @RequestParam(value = "clazzName") String clazzName,
-            @RequestParam(value = "courseName") String courseName,
-            @RequestParam(value = "cover") String cover) {
+            @RequestParam(value = "courseName") String courseName) {
 
         Map<String, Object> model = Maps.newHashMap();
-        service.insert(clazzName, courseName, cover);
+        service.insert(teacherId, clazzName, courseName);
         model.put(RESULT, Boolean.TRUE);
         return model;
     }
@@ -62,7 +62,18 @@ public class ClazzCourseController {
             @RequestParam(value = "clazzCourseId") long clazzCourseId) {
 
         Map<String, Object> model = Maps.newHashMap();
-        model.put("user", service.getByClazzCourseId(clazzCourseId));
+        model.put("data", service.getByClazzCourseId(clazzCourseId));
+        return model;
+    }
+
+    @PostMapping(value = "/listAllByTeacherId")
+    public Map<String, Object> listAllByTeacherId(
+            @RequestParam(value = "teacherId") String teacherId,
+            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize) {
+
+        Map<String, Object> model = Maps.newHashMap();
+        model.put("dataList", service.listAllByTeacherId(teacherId, pageNumber, pageSize));
         return model;
     }
 

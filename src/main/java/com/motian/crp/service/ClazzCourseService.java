@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @Author: motian
@@ -24,12 +25,12 @@ public class ClazzCourseService {
     private ClazzCourseManager manager;
 
     @Transactional
-    public void insert(String clazzName, String courseName, String cover) {
+    public void insert(String teacherId, String clazzName, String courseName) {
         manager.save(new ClazzCourseData()
+                .setTeacherId(teacherId)
                 .setClazzCourseId(CrpServiceUtils.generateId())
                 .setClazzName(clazzName)
-                .setCourseName(courseName)
-                .setCover(cover));
+                .setCourseName(courseName));
     }
 
 
@@ -46,9 +47,6 @@ public class ClazzCourseService {
             data.get().setCourseName(courseName);
         }
 
-        if (!StringUtils.isBlank(cover)) {
-            data.get().setCover(cover);
-        }
         return manager.save(data.get());
     }
 
@@ -60,8 +58,13 @@ public class ClazzCourseService {
         return manager.getByClazzCourseId(clazzCourseId).orElse(null);
     }
 
+    public List<ClazzCourseData> listAllByTeacherId(String teacherId, int pageNumber, int pageSize) {
+        return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
+                .stream().filter(o -> o.getTeacherId().equals(teacherId))
+                .collect(Collectors.toList());
+    }
+
     public List<ClazzCourseData> listAll(int pageNumber, int pageSize) {
         return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent();
     }
-
 }

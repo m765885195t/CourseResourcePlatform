@@ -31,6 +31,8 @@ public class DataType {
 
     @AllArgsConstructor
     public enum UserType {
+        UNKNOWN(0),
+
         ADMINISTRATOR(1),
 
         TEACHER(2),

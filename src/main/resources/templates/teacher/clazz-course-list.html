@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.1</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/X-admin/css/font.css}">
+    <link rel="stylesheet" th:href="@{/X-admin/css/xadmin.css}">
+    <script type="text/javascript"
+            src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script charset="utf-8" th:src="@{/X-admin/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/X-admin/js/xadmin.js}"></script>
+    <script type="text/javascript" th:src="@{/X-admin/js/cookie.js}"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small"
+       style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+            <input class="layui-input" placeholder="开始日" name="start"
+                   id="start">
+            <input class="layui-input" placeholder="截止日" name="end" id="end">
+            <input type="text" name="username" placeholder="课程名"
+                   autocomplete="off" class="layui-input">
+            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i
+                    class="layui-icon">&#xe615;</i></button>
+        </form>
+    </div>
+    <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
+                class="layui-icon"></i>批量删除
+        </button>
+        <button class="layui-btn" onclick="openAddChapter()"><i
+                class="layui-icon"></i>添加
+        </button>
+        <span class="x-right" style="line-height:40px">共有数据：1 条</span>
+    </xblock>
+
+    <table style="display: none;" class="layui-hide" id="list"
+           lay-filter="demo">
+    </table>
+</div>
+</body>
+
+<script th:inline="none">
+    var tableIns;
+    $(function () {
+        layui.use(['form', 'table', 'layer'], function () {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+            tableIns = table.render({
+                elem: '#list',
+                cellMinWidth: 80,
+                url: '/clazzCourse/listAll',
+                id: 'list',
+                even: true,
+                toolbar: 'default',
+                totalRow: true,
+                defaultToolbar: ['filter'],
+                cols: [[{
+                    title: '课程号',
+                    field: 'courseId',
+                    unresize: true,
+                    width: 70,
+                    hide: true
+                }, {
+                    title: '序号',
+                    field: 'zizeng',
+                    unresize: true,
+                    width: 70,
+                    align: 'left',
+                    type: 'numbers'
+                }, {
+                    title: '学校名',
+                    field: 'schoolId',
+                    unresize: true
+
+                }, {
+                    title: '课程名',
+                    field: 'courseName',
+                    unresize: true
+
+                }, {
+                    title: '课程创建者',
+                    field: 'teacherId',
+                    unresize: true
+
+                }, {
+                    title: '学习人数',
+                    field: 'courseFlag',
+                    unresize: true
+
+                }, {
+                    title: '状态(通过审核)',
+                    field: 'courseFlag'
+
+                }, {
+                    fixed: 'right',
+                    width: 200,
+                    align: 'right',
+                    toolbar: '#barDemo'
+                }]]
+            });
+
+
+            /*操作列*/
+            table.on('tool(demo)', function (obj) {
+                var data = obj.data //获得当前行的数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'detail') {
+                    layer.msg('查看操作');
+                } else if (layEvent === 'del') {
+                    layer.confirm('真的删除行么', function (index) {
+                        obj.del(); //删除对应行（tr）的DOM结构
+                        layer.close(index);
+                        //向服务端发送删除指令
+                    });
+                } else if (layEvent === 'edit') {
+                    layer.msg('编辑操作');
+                    window.location.href = "/teacher/courseInfo/" + data.courseId;
+                }
+            });
+        });
+    });
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs"
+       lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</html>

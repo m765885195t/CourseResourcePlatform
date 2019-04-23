@@ -1,5 +1,6 @@
 package com.motian.crp.service;
 
+import com.google.common.collect.Maps;
 import com.motian.crp.constant.DataType;
 import com.motian.crp.dao.data.UserData;
 import com.motian.crp.dao.manager.UserManager;
@@ -10,9 +11,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
+import static com.motian.crp.constant.CrpConst.StatusField.USER_NICKNAME;
+import static com.motian.crp.constant.CrpConst.StatusField.USER_TYPE;
 import static com.motian.crp.constant.DataType.UserType.STUDENTS;
 
 /**
@@ -78,6 +84,23 @@ public class UserService {
 
     public List<UserData> listAll(int pageNumber, int pageSize) {
         return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent();
+    }
+
+    public Map<String, Object> login(HttpServletRequest request, String accountId, String token) {
+
+        Map<String, Object> model = Maps.newHashMap();
+        Optional<UserData> optionalUserData = Optional.ofNullable(getByAccountId(accountId));
+        if (optionalUserData.isPresent() && optionalUserData.get().getToken().equals(token)) {
+            request.getSession().setAttribute(USER_NICKNAME, optionalUserData.get().getNickname());
+            request.getSession().setAttribute(USER_TYPE, optionalUserData.get().getUserType().code);
+            request.getSession().setAttribute(RESULT, true);
+            model.put(USER_TYPE, optionalUserData.get().getUserType().code);
+            model.put(RESULT, true);
+        } else {
+            request.getSession().setAttribute(RESULT, false);
+            model.put(RESULT, false);
+        }
+        return model;
     }
 
 }

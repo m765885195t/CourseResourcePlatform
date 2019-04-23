@@ -3,6 +3,7 @@ package com.motian.crp.web;
 import com.google.common.collect.Maps;
 import com.motian.crp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +30,10 @@ public class UserController {
             @RequestParam(value = "token") String token,
             @RequestParam(value = "userType") int userType) {
         Map<String, Object> model = Maps.newHashMap();
-        model.put(RESULT, service.registered(accountId, token, userType));
+        model.put(RESULT, service.registered(accountId,
+//                DigestUtils.md5DigestAsHex(token.getBytes())
+                token
+                , userType));
         return model;
     }
 

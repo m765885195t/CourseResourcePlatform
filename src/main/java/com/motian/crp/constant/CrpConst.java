@@ -14,5 +14,7 @@ public interface CrpConst {
 
     interface StatusField {
         String RESULT = "result";
+        String USER_TYPE = "userType";
+        String USER_NICKNAME = "userNickname";
     }
 }
