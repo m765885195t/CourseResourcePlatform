@@ -22,18 +22,7 @@
 </head>
 
 <body>
-<div class="x-nav">
-      <span class="layui-breadcrumb">
-        <a href="">首页</a>
-        <a href="">演示</a>
-        <a>
-          <cite>导航元素</cite></a>
-      </span>
-    <a class="layui-btn layui-btn-small"
-       style="line-height:1.6em;margin-top:3px;float:right"
-       href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-</div>
+
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so">
@@ -53,7 +42,6 @@
         <button class="layui-btn" onclick="openAddChapter()"><i
                 class="layui-icon"></i>添加
         </button>
-        <span class="x-right" style="line-height:40px">共有数据：1 条</span>
     </xblock>
 
     <table style="display: none;" class="layui-hide" id="list"
@@ -65,89 +53,86 @@
 <script th:inline="none">
     var tableIns;
     $(function () {
+        var teacherId = "th:text=*{session.userNickname}";
+        alert("motian" + teacherId);
         layui.use(['form', 'table', 'layer'], function () {
             var form = layui.form;
             var table = layui.table;
             var layer = layui.layer;
+
+            //执行一个 table 实例
             tableIns = table.render({
-                elem: '#list',
+                elem: '#list',//绑定table id
                 cellMinWidth: 80,
                 url: '/clazzCourse/listAll',
+                where: {'Id': $data.Id},
                 id: 'list',
                 even: true,
                 toolbar: 'default',
                 totalRow: true,
-                defaultToolbar: ['filter'],
-                cols: [[{
-                    title: '课程号',
-                    field: 'courseId',
-                    unresize: true,
-                    width: 70,
-                    hide: true
-                }, {
-                    title: '序号',
-                    field: 'zizeng',
-                    unresize: true,
-                    width: 70,
-                    align: 'left',
-                    type: 'numbers'
-                }, {
-                    title: '学校名',
-                    field: 'schoolId',
-                    unresize: true
-
-                }, {
-                    title: '课程名',
-                    field: 'courseName',
-                    unresize: true
-
-                }, {
-                    title: '课程创建者',
-                    field: 'teacherId',
-                    unresize: true
-
-                }, {
-                    title: '学习人数',
-                    field: 'courseFlag',
-                    unresize: true
-
-                }, {
-                    title: '状态(通过审核)',
-                    field: 'courseFlag'
-
-                }, {
-                    fixed: 'right',
-                    width: 200,
-                    align: 'right',
-                    toolbar: '#barDemo'
-                }]]
+                page: true,
+                limit: 10,
+                limits: [10, 20, 50, 100],
+                cols: [[
+                    {type: "checkbox", fixed: "left", width: 50},
+                    {title: '序号', field: 'id', width: 70, type: 'numbers'},
+                    {title: '班课号', field: 'clazzCourseId', sort: true},
+                    {title: '班课名', sort: true, field: 'clazzName'},
+                    {title: '开课时间', sort: true, field: 'clazzCourseStartTime'},
+                    {title: '参加的学生人数', sort: true, field: 'studentNumber'},
+                    {title: '操作', toolbar: '#barDemo'}
+                ]]
             });
 
-
-            /*操作列*/
+            //监听工具条
             table.on('tool(demo)', function (obj) {
-                var data = obj.data //获得当前行的数据
-                    , layEvent = obj.event; //获得 lay-event 对应的值
-                if (layEvent === 'detail') {
-                    layer.msg('查看操作');
-                } else if (layEvent === 'del') {
-                    layer.confirm('真的删除行么', function (index) {
-                        obj.del(); //删除对应行（tr）的DOM结构
-                        layer.close(index);
-                        //向服务端发送删除指令
-                    });
-                } else if (layEvent === 'edit') {
-                    layer.msg('编辑操作');
-                    window.location.href = "/teacher/courseInfo/" + data.courseId;
+                var data = obj.data;
+                if (obj.event === 'detail') {
+                    layer.msg('ID：' + data.clazzCourseId + ' 的查看操作');
+                } else if (obj.event === 'del') {
+                    layer.msg('ID：' + data.id + ' 的删除操作');
+                    // layer.confirm('真的删除行么', function (index) {
+                    //     //obj.del();
+                    //     console.log(obj);
+                    //     console.log(data);
+                    //     //layer.close(index);
+                    //     $.ajax({
+                    //         url: "/lightnote/informa/informationDelete",
+                    //         type: "POST",
+                    //         data: {'id': data.id},
+                    //         dataType: "json",
+                    //         success: function (data) {
+                    //             if (data == null) {
+                    //                 layer.msg("删除失败", {icon: 5});
+                    //             } else {
+                    //                 //删除这一行
+                    //                 obj.del();
+                    //                 //关闭弹框
+                    //                 layer.close(index);
+                    //                 layer.msg("删除成功", {icon: 6});
+                    //                 layer.closeAll();
+                    //                 parent.location.reload();
+                    //                 Load(); //删除完需要加载数据
+                    //             }
+                    //         },
+                    //         error: function () {
+                    //             alert(data);
+                    //         }
+                    //     });
+                    // });
+                } else if (obj.event === 'edit') {
+                    layer.msg('ID：' + data.id + ' 的编辑操作');
                 }
             });
-        });
+        })
     });
 </script>
+
 <script type="text/html" id="barDemo">
     <a class="layui-btn layui-btn-primary layui-btn-xs"
        lay-event="detail">查看</a>
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+
 </html>

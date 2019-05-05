@@ -20,8 +20,12 @@ import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
 @RequestMapping("/resource")
 public class ResourceController {
 
+    private final ResourceService service;
+
     @Autowired
-    private ResourceService service;
+    public ResourceController(ResourceService service) {
+        this.service = service;
+    }
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(
@@ -59,16 +63,6 @@ public class ResourceController {
         return model;
     }
 
-    @PostMapping(value = "/listAllByTeacherId")
-    public Map<String, Object> listAllByTeacherId(
-            @RequestParam(value = "teacherId") String teacherId,
-            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize) {
-
-        Map<String, Object> model = Maps.newHashMap();
-        model.put("dataList", service.listAllByTeacherId(teacherId, pageNumber, pageSize));
-        return model;
-    }
 
     @PostMapping(value = "/listAll")
     public Map<String, Object> listAll(

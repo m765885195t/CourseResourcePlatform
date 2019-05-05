@@ -27,8 +27,12 @@ import static com.motian.crp.constant.CrpConst.StatusField.USER_TYPE;
 @Slf4j
 @Controller
 public class LoginController {
+    private final UserService service;
+
     @Autowired
-    private UserService service;
+    public LoginController(UserService service) {
+        this.service = service;
+    }
 
     @ResponseBody
     @PostMapping(value = "/login")
@@ -42,7 +46,7 @@ public class LoginController {
                 token
 
         ));
-        request.getSession().setAttribute("1", 1);
+        request.getSession().setAttribute("1", 15129);
         return model;
     }
 

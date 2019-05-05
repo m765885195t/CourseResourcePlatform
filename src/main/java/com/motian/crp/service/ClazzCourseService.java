@@ -4,7 +4,6 @@ import com.motian.crp.dao.data.ClazzCourseData;
 import com.motian.crp.dao.manager.ClazzCourseManager;
 import com.motian.crp.utils.CrpServiceUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,8 @@ public class ClazzCourseService {
         manager.save(new ClazzCourseData()
                 .setTeacherId(teacherId)
                 .setClazzCourseId(CrpServiceUtils.generateId())
-                .setClazzName(clazzName)
-                .setCourseName(courseName));
+
+        );
     }
 
 
@@ -40,12 +39,7 @@ public class ClazzCourseService {
         if (!data.isPresent()) {
             throw new Exception("The user does not exist. id=" + id);
         }
-        if (!StringUtils.isBlank(clazzName)) {
-            data.get().setClazzName(clazzName);
-        }
-        if (!StringUtils.isBlank(courseName)) {
-            data.get().setCourseName(courseName);
-        }
+
 
         return manager.save(data.get());
     }

@@ -17,8 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
-import static com.motian.crp.constant.CrpConst.StatusField.USER_NICKNAME;
-import static com.motian.crp.constant.CrpConst.StatusField.USER_TYPE;
+import static com.motian.crp.constant.CrpConst.StatusField.USER_INFO;
 import static com.motian.crp.constant.DataType.UserType.STUDENTS;
 
 /**
@@ -91,10 +90,8 @@ public class UserService {
         Map<String, Object> model = Maps.newHashMap();
         Optional<UserData> optionalUserData = Optional.ofNullable(getByAccountId(accountId));
         if (optionalUserData.isPresent() && optionalUserData.get().getToken().equals(token)) {
-            request.getSession().setAttribute(USER_NICKNAME, optionalUserData.get().getNickname());
-            request.getSession().setAttribute(USER_TYPE, optionalUserData.get().getUserType().code);
+            request.getSession().setAttribute(USER_INFO, optionalUserData.get());
             request.getSession().setAttribute(RESULT, true);
-            model.put(USER_TYPE, optionalUserData.get().getUserType().code);
             model.put(RESULT, true);
         } else {
             request.getSession().setAttribute(RESULT, false);

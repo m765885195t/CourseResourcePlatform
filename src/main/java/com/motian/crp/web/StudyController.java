@@ -20,8 +20,12 @@ import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
 @RequestMapping("/study")
 public class StudyController {
 
+    private final StudyService service;
+
     @Autowired
-    private StudyService service;
+    public StudyController(StudyService service) {
+        this.service = service;
+    }
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(

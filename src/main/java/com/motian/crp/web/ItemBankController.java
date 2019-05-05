@@ -20,8 +20,12 @@ import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
 @RequestMapping("/itemBank")
 public class ItemBankController {
 
+    private final ItemBankService service;
+
     @Autowired
-    private ItemBankService service;
+    public ItemBankController(ItemBankService service) {
+        this.service = service;
+    }
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(

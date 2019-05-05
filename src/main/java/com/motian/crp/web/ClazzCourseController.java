@@ -1,13 +1,16 @@
 package com.motian.crp.web;
 
 import com.google.common.collect.Maps;
+import com.motian.crp.dao.data.ClazzCourseData;
 import com.motian.crp.service.ClazzCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
@@ -20,8 +23,12 @@ import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
 @RequestMapping("/clazzCourse")
 public class ClazzCourseController {
 
+    private final ClazzCourseService service;
+
     @Autowired
-    private ClazzCourseService service;
+    public ClazzCourseController(ClazzCourseService service) {
+        this.service = service;
+    }
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(
@@ -77,13 +84,14 @@ public class ClazzCourseController {
         return model;
     }
 
-    @PostMapping(value = "/listAll")
+    @GetMapping(value = "/listAll")
     public Map<String, Object> listAll(
-            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize) {
+            @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "limit", required = false, defaultValue = "50") int pageSize) {
 
+        List<ClazzCourseData> dataList = service.listAll(pageNumber, pageSize);
         Map<String, Object> model = Maps.newHashMap();
-        model.put("dataList", service.listAll(pageNumber, pageSize));
+        model.put("data", dataList);
         return model;
     }
 }

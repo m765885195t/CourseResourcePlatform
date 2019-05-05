@@ -16,5 +16,6 @@ public interface CrpConst {
         String RESULT = "result";
         String USER_TYPE = "userType";
         String USER_NICKNAME = "userNickname";
+        String USER_INFO = "userInfo";
     }
 }

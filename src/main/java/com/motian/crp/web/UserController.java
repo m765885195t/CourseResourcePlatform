@@ -21,8 +21,12 @@ import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
 @RequestMapping("/user")
 public class UserController {
 
+    private final UserService service;
+
     @Autowired
-    private UserService service;
+    public UserController(UserService service) {
+        this.service = service;
+    }
 
     @PostMapping(value = "/registered")
     public Map<String, Object> registered(

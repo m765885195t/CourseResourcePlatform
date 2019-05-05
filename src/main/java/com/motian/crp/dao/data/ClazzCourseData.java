@@ -30,10 +30,9 @@ public class ClazzCourseData extends BaseData {
     @ApiModelProperty(value = "班课号")
     private long clazzCourseId;
 
-    @ApiModelProperty(value = "班级名")
-    private String clazzName;
+    @ApiModelProperty(value = "班课名")
+    private String clazzCourseName;
 
-    @ApiModelProperty(value = "课程名")
-    private String courseName;
-
+    @ApiModelProperty(value = "开课时间")
+    private String clazzCourseStartTime;
 }
