@@ -22,54 +22,47 @@
 </head>
 
 <body>
-
 <div class="x-body">
     <div class="layui-row">
-        <form class="layui-form layui-col-md12 x-so">
-            <input class="layui-input" placeholder="开始日" name="start"
-                   id="start">
-            <input class="layui-input" placeholder="截止日" name="end" id="end">
-            <input type="text" name="username" placeholder="课程名"
-                   autocomplete="off" class="layui-input">
-            <button class="layui-btn" lay-submit="" lay-filter="sreach"><i
-                    class="layui-icon">&#xe615;</i></button>
+        <form class="layui-form layui-col-md12 x-so" id="zq_search">
+            班课号：<input id="name" type="text" name="name" placeholder="请输入班课号"
+                       autocomplete="off" class="layui-input">
+            <button id="search" class="layui-btn" lay-submit=""
+                    lay-filter="search"><i class="layui-icon">&#xe615;</i>
+            </button>
         </form>
     </div>
-    <xblock>
-        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i
-                class="layui-icon"></i>批量删除
-        </button>
-        <button class="layui-btn" onclick="openAddChapter()"><i
-                class="layui-icon"></i>添加
-        </button>
-    </xblock>
 
-    <table style="display: none;" class="layui-hide" id="list"
-           lay-filter="demo">
+    <table style="display: none;" class="layui-hide" id="clazz_course_table"
+           lay-filter="clazz_course_table">
     </table>
 </div>
 </body>
 
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs"
+       lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
 <script th:inline="none">
-    var tableIns;
     $(function () {
-        var teacherId = "th:text=*{session.userNickname}";
-        alert("motian" + teacherId);
         layui.use(['form', 'table', 'layer'], function () {
             var form = layui.form;
             var table = layui.table;
             var layer = layui.layer;
 
             //执行一个 table 实例
-            tableIns = table.render({
-                elem: '#list',//绑定table id
+            table.render({
+                elem: '#clazz_course_table',//绑定table id
                 cellMinWidth: 80,
-                url: '/clazzCourse/listAll',
-                where: {'Id': $data.Id},
+                url: '/clazzCourse/listAllByTeacherId',
                 id: 'list',
                 even: true,
-                toolbar: 'default',
-                totalRow: true,
+                toolbar: 'default', //开启头工具栏
+
                 page: true,
                 limit: 10,
                 limits: [10, 20, 50, 100],
@@ -77,49 +70,65 @@
                     {type: "checkbox", fixed: "left", width: 50},
                     {title: '序号', field: 'id', width: 70, type: 'numbers'},
                     {title: '班课号', field: 'clazzCourseId', sort: true},
-                    {title: '班课名', sort: true, field: 'clazzName'},
-                    {title: '开课时间', sort: true, field: 'clazzCourseStartTime'},
-                    {title: '参加的学生人数', sort: true, field: 'studentNumber'},
+                    {title: '班课名', sort: true, field: 'clazzCourseName'},
                     {title: '操作', toolbar: '#barDemo'}
                 ]]
             });
 
-            //监听工具条
-            table.on('tool(demo)', function (obj) {
+            //监听头工具栏事件
+            table.on('toolbar(clazz_course_table)', function (obj) {
+                var checkStatus = table.checkStatus(obj.config.id);
+                var data = checkStatus.data; //获取选中的数据
+                switch (obj.event) {
+                    case 'add':
+                        layer.msg('添加');
+                        break;
+                    case 'update':
+                        if (data.length === 0) {
+                            layer.msg('请选择一行');
+                        } else if (data.length > 1) {
+                            layer.msg('只能同时编辑一个');
+                        } else {
+                            layer.alert('编辑 [id]：' + checkStatus.data[0].id);
+                        }
+                        break;
+                    case 'delete':
+                        if (data.length === 0) {
+                            layer.msg('请选择一行');
+                        } else {
+                            layer.msg('删除');
+                        }
+                        break;
+                }
+            });
+
+
+            //监听工具条 tool(里面为表格的 lay-filter属性)
+            table.on('tool(clazz_course_table)', function (obj) {
                 var data = obj.data;
                 if (obj.event === 'detail') {
-                    layer.msg('ID：' + data.clazzCourseId + ' 的查看操作');
+                    layer.msg('ID：' + data.id + ' 的查看操作');
                 } else if (obj.event === 'del') {
-                    layer.msg('ID：' + data.id + ' 的删除操作');
-                    // layer.confirm('真的删除行么', function (index) {
-                    //     //obj.del();
-                    //     console.log(obj);
-                    //     console.log(data);
-                    //     //layer.close(index);
-                    //     $.ajax({
-                    //         url: "/lightnote/informa/informationDelete",
-                    //         type: "POST",
-                    //         data: {'id': data.id},
-                    //         dataType: "json",
-                    //         success: function (data) {
-                    //             if (data == null) {
-                    //                 layer.msg("删除失败", {icon: 5});
-                    //             } else {
-                    //                 //删除这一行
-                    //                 obj.del();
-                    //                 //关闭弹框
-                    //                 layer.close(index);
-                    //                 layer.msg("删除成功", {icon: 6});
-                    //                 layer.closeAll();
-                    //                 parent.location.reload();
-                    //                 Load(); //删除完需要加载数据
-                    //             }
-                    //         },
-                    //         error: function () {
-                    //             alert(data);
-                    //         }
-                    //     });
-                    // });
+                    layer.confirm('确定删除序号为 ' + data.id + ' 的课程？', function (index) {
+                        $.ajax({
+                            url: '/clazzCourse/delete',
+                            type: "POST",
+                            data: {'id': data.id},
+                            dataType: "json",
+                            success: function (data) {
+                                if (data == null) {
+                                    layer.msg("删除失败", {icon: 5});
+                                } else {
+                                    //删除这一行
+                                    obj.del();
+                                    layer.close(index);
+                                }
+                            },
+                            error: function () {
+                                alert(data);
+                            }
+                        });
+                    });
                 } else if (obj.event === 'edit') {
                     layer.msg('ID：' + data.id + ' 的编辑操作');
                 }
@@ -128,11 +137,5 @@
     });
 </script>
 
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs"
-       lay-event="detail">查看</a>
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
 
 </html>

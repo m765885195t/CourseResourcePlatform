@@ -19,17 +19,16 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Accessors(chain = true)
-@Table(name = "crp_clazz_course")
+@Table(name = "crp_clazz_chapter")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "ClazzCourseData", description = "班课信息")
-public class ClazzCourseData extends BaseData {
-
-    @ApiModelProperty(value = "创建者id")
-    private String teacherId;
-
-    @ApiModelProperty(value = "班课号")
+@ApiModel(value = "ClazzChapterData", description = "班课章节信息")
+public class ClazzChapterData extends BaseData {
+    @ApiModelProperty(value = "班课Id")
     private long clazzCourseId;
 
-    @ApiModelProperty(value = "班课名")
-    private String clazzCourseName;
+    @ApiModelProperty(value = "所在班课的顺序")
+    private int order;
+
+    @ApiModelProperty(value = "章节名")
+    private String clazzChapterName;
 }

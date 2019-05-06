@@ -11,4 +11,6 @@ import java.util.Optional;
  */
 public interface ClazzCourseManager extends JpaRepository<ClazzCourseData, Long> {
     Optional<ClazzCourseData> getByClazzCourseId(long clazzCourseId);
+
+    Optional<ClazzCourseData> getByTeacherIdAndClazzCourseName(String teacherId, String clazzCourseName);
 }

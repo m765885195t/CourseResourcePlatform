@@ -30,5 +30,4 @@ public class StudyData extends BaseData {
     private long clazzCourseId;
 
     private long learningTime;
-
 }

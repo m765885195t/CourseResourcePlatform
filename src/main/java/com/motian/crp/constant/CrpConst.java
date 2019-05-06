@@ -5,7 +5,8 @@ package com.motian.crp.constant;
  * @Email: motian@xiyoulinux.org
  */
 public interface CrpConst {
-    int DEFAULT_RANDOM_RANGE_BYTES = 0;
+    int DEFAULT_RANDOM_RANGE_BYTES = 10;
+    int NUMBER_RANDOM_RANGE_BYTES = 6;
 
     interface ProjectStructure {
         String BASE_PACKAGE_SPACE = "com.motian.crp";
@@ -17,5 +18,9 @@ public interface CrpConst {
         String USER_TYPE = "userType";
         String USER_NICKNAME = "userNickname";
         String USER_INFO = "userInfo";
+    }
+
+    interface DefaultValue {
+        String NICKNAME = "motian";
     }
 }

@@ -48,11 +48,28 @@ public class DataType {
                     type = t;
                 }
             }
-            if (type == ADMINISTRATOR) {
-                type = STUDENTS;
+//            if (type == ADMINISTRATOR) {
+//                type = STUDENTS;
+//            }
+            return Optional.ofNullable(type);
+        }
+    }
+
+    @AllArgsConstructor
+    public enum ResourceType {
+        VIDEO(1),
+
+        AUDIO(2),;
+        public final int code;
+
+        public static Optional<ResourceType> getType(int code) {
+            ResourceType type = null;
+            for (ResourceType t : ResourceType.values()) {
+                if (t.code == code) {
+                    type = t;
+                }
             }
             return Optional.ofNullable(type);
         }
-
     }
 }

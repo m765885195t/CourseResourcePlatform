@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
 import static com.motian.crp.constant.CrpConst.StatusField.USER_INFO;
+import static com.motian.crp.constant.CrpConst.StatusField.USER_TYPE;
 import static com.motian.crp.constant.DataType.UserType.STUDENTS;
 
 /**
@@ -92,6 +93,7 @@ public class UserService {
         if (optionalUserData.isPresent() && optionalUserData.get().getToken().equals(token)) {
             request.getSession().setAttribute(USER_INFO, optionalUserData.get());
             request.getSession().setAttribute(RESULT, true);
+            model.put(USER_TYPE, optionalUserData.get().getUserType().code);
             model.put(RESULT, true);
         } else {
             request.getSession().setAttribute(RESULT, false);

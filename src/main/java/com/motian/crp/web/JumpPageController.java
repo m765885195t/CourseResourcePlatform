@@ -21,6 +21,7 @@ public class JumpPageController {
         return "/welcome";
     }
 
+
     @GetMapping("/teacher/clazzCourseInfo")
     private String clazzCourseInfo() {
         return "/teacher/clazz-course-info";
@@ -32,12 +33,12 @@ public class JumpPageController {
     }
 
     @GetMapping("/teacher/index")
-    public String toAdminIndex() {
+    public String toTeacherIndex() {
         return "/teacher/index";
     }
 
     @GetMapping("/teacher/clazz-course-list")
-    public String toCourses() {
+    public String toClazzCourses() {
         return "/teacher/clazz-course-list";
     }
 

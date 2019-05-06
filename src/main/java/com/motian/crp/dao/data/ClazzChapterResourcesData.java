@@ -10,22 +10,17 @@ import lombok.experimental.Accessors;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-/**
- * @Author: motian
- * @Email: motian@xiyoulinux.org
- */
-
 @Data
 @Entity
 @NoArgsConstructor
 @Accessors(chain = true)
-@Table(name = "crp_clazz_course")
+@Table(name = "crp_clazz_chapter_resources")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "UserClazzCourseInfoData", description = "用户班课信息")
-public class UserClazzCourseInfoData extends BaseData {
-    @ApiModelProperty(value = "用户id")
-    private String accountId;
+@ApiModel(value = "ClazzChapterResourcesData", description = "班课章节资源")
+public class ClazzChapterResourcesData extends BaseData {
+    @ApiModelProperty(value = "章节id")
+    private long clazzChapterId;
 
-    @ApiModelProperty(value = "班课号")
-    private long clazzCourseId;
+    @ApiModelProperty(value = "资源id")
+    private long resourceLibraryId;
 }
