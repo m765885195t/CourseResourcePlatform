@@ -1,7 +1,9 @@
 package com.motian.crp.web;
 
 import com.google.common.collect.Maps;
+import com.motian.crp.dao.data.UserData;
 import com.motian.crp.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,14 +11,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
+import static com.motian.crp.constant.CrpConst.StatusField.USER_INFO;
 
 /**
  * @Author: motian
  * @Email: motian@xiyoulinux.org
  */
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -51,16 +58,20 @@ public class UserController {
 
     @PostMapping(value = "/modify")
     public Map<String, Object> modify(
-            @RequestParam(value = "id") long id,
-            @RequestParam(value = "password", required = false, defaultValue = "") String password,
-            @RequestParam(value = "nickname", required = false, defaultValue = "") String nickname,
+            @RequestParam(value = "accountId") String accountId,
+            @RequestParam(value = "oldToken", required = false, defaultValue = "") String oldToken,
+            @RequestParam(value = "newToken", required = false, defaultValue = "") String newToken,
             @RequestParam(value = "gender", required = false, defaultValue = "-1") int gender,
             @RequestParam(value = "birthday", required = false, defaultValue = "") String birthday,
-            @RequestParam(value = "cellphoneNumber", required = false, defaultValue = "") String cellphoneNumber) throws Exception {
+            @RequestParam(value = "cellphoneNumber") String cellphoneNumber,
+            @RequestParam(value = "email") String email,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         Map<String, Object> model = Maps.newHashMap();
-        model.put("user", service.update(id, password, nickname,
-                gender, birthday, cellphoneNumber));
+        log.info("modify::accountId={}", accountId);
+        model.put(RESULT, service.update(accountId, oldToken, newToken, gender, birthday, cellphoneNumber, email));
+        UserData userData = service.getByAccountId(accountId);
+        request.getSession().setAttribute(USER_INFO, userData);
         return model;
     }
 

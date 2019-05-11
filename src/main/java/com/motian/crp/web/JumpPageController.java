@@ -1,9 +1,7 @@
 package com.motian.crp.web;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 /**
  * @Author: motian
@@ -21,10 +19,15 @@ public class JumpPageController {
         return "/welcome";
     }
 
+    // 老师相关
+    @GetMapping("/teacher/index")
+    public String toTeacherIndex() {
+        return "/teacher/index";
+    }
 
-    @GetMapping("/teacher/clazzCourseInfo")
-    private String clazzCourseInfo() {
-        return "/teacher/clazz-course-info";
+    @GetMapping("/teacher/clazzCourseAdd")
+    private String clazzCourseAdd() {
+        return "/teacher/clazz-course-add";
     }
 
     @GetMapping("/teacher/clazzCourseList")
@@ -32,20 +35,8 @@ public class JumpPageController {
         return "/teacher/clazz-course-list";
     }
 
-    @GetMapping("/teacher/index")
-    public String toTeacherIndex() {
-        return "/teacher/index";
+    @GetMapping("/teacher/clazzChapterList")
+    private String clazzChapterList() {
+        return "/teacher/clazz-course-chapter-list";
     }
-
-    @GetMapping("/teacher/clazz-course-list")
-    public String toClazzCourses() {
-        return "/teacher/clazz-course-list";
-    }
-
-    @GetMapping("/teacher/clazzCourse/{courseId}")
-    public String toCourInfo(@PathVariable int courseId, Model model) {
-        model.addAttribute("courseId", courseId);
-        return "/teacher/course-info";
-    }
-
 }

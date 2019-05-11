@@ -35,9 +35,6 @@
         </li>
     </ul>
 </div>
-<!-- 顶部结束 -->
-<!-- 中部开始 -->
-<!-- 左侧菜单开始 -->
 <div class="left-nav">
     <div id="side-nav">
         <ul id="nav">
@@ -49,54 +46,34 @@
                 </a>
                 <ul class="sub-menu">
                     <li>
-                        <a _href="order-list.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>班课详情</cite>
-                            <i class="iconfont nav_right">&#xe697;</i>
-                        </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a _href="/teacher/clazzCourseInfo">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>班课信息</cite>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="sub-menu">
-                            <li>
-                                <a _href="/teacher/clazzCourseInfo">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>学生列表</cite>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="sub-menu">
-                            <li>
-                                <a _href="/teacher/clazzCourseInfo">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>导入资源</cite>
-                                </a>
-                            </li>
-                        </ul>
-                        <ul class="sub-menu">
-                            <li>
-                                <a _href="/teacher/clazzCourseInfo">
-                                    <i class="iconfont">&#xe6a7;</i>
-                                    <cite>学习数据</cite>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a _href="order-list.html">
+                        <a _href="/teacher/clazzCourseAdd">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>创建班课</cite>
                         </a>
                     </li>
+                </ul>
+                <ul class="sub-menu">
                     <li>
                         <a _href="/teacher/clazzCourseList">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>班课列表</cite>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/teacher/clazzChapterList">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>章节信息</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/teacher/clazzCourseInfo">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>学生列表</cite>
                         </a>
                     </li>
                 </ul>
@@ -111,6 +88,14 @@
                     <li>
                         <a _href="/teacher/clazzCourseInfo">
                             <i class="iconfont">&#xe6a7;</i>
+                            <cite>新建题目</cite>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/teacher/clazzCourseInfo">
+                            <i class="iconfont">&#xe6a7;</i>
                             <cite>题库列表</cite>
                         </a>
                     </li>
@@ -119,15 +104,7 @@
                     <li>
                         <a _href="/teacher/clazzCourseInfo">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>创建题目</cite>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/teacher/clazzCourseInfo">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>导入题目</cite>
+                            <cite>导出题目</cite>
                         </a>
                     </li>
                 </ul>
@@ -142,12 +119,6 @@
                     <li>
                         <a _href="clazz-course-add.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>添加资源</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="clazz-course-add.html">
-                            <i class="iconfont">&#xe6a7;</i>
                             <cite>上传资源</cite>
                         </a>
                     </li>
@@ -155,6 +126,12 @@
                         <a _href="clazz-course-add.html">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>资源列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="clazz-course-add.html">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>挂载资源</cite>
                         </a>
                     </li>
                 </ul>
@@ -169,19 +146,13 @@
                     <li>
                         <a _href="clazz-course-add.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>课程数据</cite>
+                            <cite>课程分析</cite>
                         </a>
                     </li>
                     <li>
                         <a _href="clazz-course-add.html">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>资源数据</cite>
-                        </a>
-                    </li>
-                    <li>
-                        <a _href="clazz-course-add.html">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>学生数据</cite>
+                            <cite>资源分析</cite>
                         </a>
                     </li>
                 </ul>
@@ -189,13 +160,10 @@
         </ul>
     </div>
 </div>
-<!-- <div class="x-slide_left"></div> -->
-<!-- 左侧菜单结束 -->
-<!-- 右侧主体开始 -->
 <div class="page-content">
     <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
         <ul class="layui-tab-title">
-            <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+            <li class="home"><i class="layui-icon">&#xe68e;</i>我的信息</li>
         </ul>
         <div class="layui-tab-content">
             <div class="layui-tab-item layui-show">
@@ -206,9 +174,6 @@
     </div>
 </div>
 <div class="page-content-bg"></div>
-<!-- 右侧主体结束 -->
-<!-- 中部结束 -->
-<!-- 底部开始 -->
 <div class="footer">
 
 </div>

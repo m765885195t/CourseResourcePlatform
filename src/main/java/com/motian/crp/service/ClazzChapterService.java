@@ -1,7 +1,9 @@
 package com.motian.crp.service;
 
+import com.google.common.collect.Lists;
 import com.motian.crp.dao.data.ClazzChapterData;
 import com.motian.crp.dao.manager.ClazzChapterManager;
+import com.motian.crp.dao.manager.ClazzCourseManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,27 +22,30 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ClazzChapterService {
-    private final ClazzChapterManager manager;
+    private final ClazzCourseManager clazzCourseManager;
+    private final ClazzChapterManager clazzChapterManager;
 
     @Autowired
-    public ClazzChapterService(ClazzChapterManager manager) {
-        this.manager = manager;
+    public ClazzChapterService(ClazzCourseManager clazzCourseManager,
+                               ClazzChapterManager clazzChapterManager) {
+        this.clazzCourseManager = clazzCourseManager;
+        this.clazzChapterManager = clazzChapterManager;
     }
 
     @Transactional
-    public void insert(long clazzCourseId, int order, String clazzChapterName) {
-        manager.getByClazzCourseIdAndClazzChapterName(clazzCourseId, clazzChapterName)
+    public void insert(long clazzCourseId, int sequence, String clazzChapterName) {
+        clazzChapterManager.getByClazzCourseIdAndSequenceAndClazzChapterName(clazzCourseId, sequence, clazzChapterName)
                 .orElseGet(() ->
-                        manager.save(new ClazzChapterData()
+                        clazzChapterManager.save(new ClazzChapterData()
                                 .setClazzCourseId(clazzCourseId)
+                                .setSequence(sequence)
                                 .setClazzChapterName(clazzChapterName)
-                                .setOrder(order))
-                );
+                        ));
     }
 
 
     public ClazzChapterData update(long id, String clazzChapterName) throws Exception {
-        Optional<ClazzChapterData> data = manager.findById(id);
+        Optional<ClazzChapterData> data = clazzChapterManager.findById(id);
         if (!data.isPresent()) {
             throw new Exception("The ClazzChapterData does not exist. id=" + id);
         }
@@ -48,20 +53,69 @@ public class ClazzChapterService {
             data.get().setClazzChapterName(clazzChapterName);
         }
 
-        return manager.save(data.get());
+        return clazzChapterManager.save(data.get());
     }
 
     public void delete(long id) {
-        manager.findById(id).ifPresent(manager::delete);
+        clazzChapterManager.findById(id).ifPresent(clazzChapterManager::delete);
     }
 
     public ClazzChapterData getById(long id) {
-        return manager.findById(id).orElse(null);
+        return clazzChapterManager.findById(id).orElse(null);
     }
 
-    public List<ClazzChapterData> listAll(long clazzCourseId, int pageNumber, int pageSize) {
-        return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
-                .stream().filter(o -> o.getClazzCourseId() == clazzCourseId)
-                .collect(Collectors.toList());
+
+    public List<ClazzChapterData> listAll(String teacherId, String clazzCourseId,
+                                          String clazzCourseName, int pageNumber, int pageSize) {
+
+        List<ClazzChapterData> dataList = Lists.newArrayList();
+        dataList.addAll(listByClazzCourseId(teacherId, clazzCourseId, pageNumber, pageSize));
+        dataList.addAll(listByClazzCourseName(teacherId, clazzCourseName, pageNumber, pageSize));
+        return dataList;
+    }
+
+    private List<ClazzChapterData> listByClazzCourseId(
+            String teacherId, String clazzCourseId, int pageNumber, int pageSize) {
+        log.info("listAll::clazzCourseId={}", clazzCourseId);
+        int ccId = -1;
+        try {
+            ccId = Integer.parseInt(clazzCourseId);
+        } catch (NumberFormatException ignore) {
+        }
+
+        List<ClazzChapterData> dataList = Lists.newArrayList();
+        int finalCcId = ccId;
+        clazzCourseManager.getByTeacherId(teacherId)
+                .stream()
+                .filter(o -> o.getClazzCourseId() == finalCcId)
+                .forEach(cc -> {
+                    dataList.addAll(clazzChapterManager
+                            .findAll(PageRequest.of(pageNumber - 1, pageSize))
+                            .getContent()
+                            .stream()
+                            .filter(o -> o.getClazzCourseId() == cc.getClazzCourseId())
+                            .collect(Collectors.toList())
+                    );
+                });
+        return dataList;
+    }
+
+    private List<ClazzChapterData> listByClazzCourseName(
+            String teacherId, String clazzCourseName, int pageNumber, int pageSize) {
+
+        List<ClazzChapterData> dataList = Lists.newArrayList();
+        clazzCourseManager.getByTeacherId(teacherId)
+                .stream()
+                .filter(o -> StringUtils.isBlank(clazzCourseName) || o.getClazzCourseName().equals(clazzCourseName))
+                .forEach(cc -> {
+                    dataList.addAll(clazzChapterManager
+                            .findAll(PageRequest.of(pageNumber - 1, pageSize))
+                            .getContent()
+                            .stream()
+                            .filter(o -> o.getClazzCourseId() == cc.getClazzCourseId())
+                            .collect(Collectors.toList())
+                    );
+                });
+        return dataList;
     }
 }

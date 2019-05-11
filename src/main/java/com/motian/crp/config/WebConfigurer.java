@@ -29,10 +29,13 @@ public class WebConfigurer implements WebMvcConfigurer {
         List<String> excludePaths = Lists.newArrayList();
         //layui的静态文件
         excludePaths.add("/layui/**");
+        excludePaths.add("/X-admin/**");
+        excludePaths.add("/static/**");
 
         //登录
         excludePaths.add("/");
         excludePaths.add("/login");
+        excludePaths.add("/welcome");
 //        excludePaths.add("/error");
 
         registry.addInterceptor(crpInterceptor).

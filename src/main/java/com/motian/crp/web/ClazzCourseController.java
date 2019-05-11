@@ -1,11 +1,10 @@
 package com.motian.crp.web;
 
 import com.google.common.collect.Maps;
-import com.motian.crp.dao.data.UserData;
 import com.motian.crp.service.ClazzCourseService;
+import com.motian.crp.utils.CrpServiceUtils;
 import com.motian.crp.utils.CrpWebUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
-import static com.motian.crp.constant.CrpConst.StatusField.USER_INFO;
 
 /**
  * @Author: motian
@@ -39,11 +37,11 @@ public class ClazzCourseController {
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(
             @RequestParam(value = "teacherId") String teacherId,
+            @RequestParam(value = "galleryful") int galleryful,
             @RequestParam(value = "clazzCourseName") String clazzCourseName) {
 
         Map<String, Object> model = Maps.newHashMap();
-        service.insert(teacherId, clazzCourseName);
-        model.put(RESULT, Boolean.TRUE);
+        model.put(RESULT, service.insert(teacherId, clazzCourseName, CrpServiceUtils.ValueMap.get(galleryful)));
         return model;
     }
 
@@ -77,23 +75,14 @@ public class ClazzCourseController {
 
     @GetMapping(value = "/listAllByTeacherId")
     public Map<String, Object> listAllByTeacherId(
+            @RequestParam(value = "clazzCourseId", required = false, defaultValue = "-1") long clazzCourseId,
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize,
             HttpServletRequest request, HttpServletResponse response) {
-        String teacherId = StringUtils.EMPTY;
-
-        UserData userData = (UserData) request.getSession().getAttribute(USER_INFO);
-        if (userData != null) {
-            switch (userData.getUserType()) {
-                case TEACHER: {
-                    teacherId = userData.getAccountId();
-                    break;
-                }
-            }
-        }
         Map<String, Object> model = Maps.newHashMap();
 
-        model.put("data", service.listAllByTeacherId(teacherId, pageNumber, pageSize));
+        model.put("data", service.listAllByTeacherId(CrpServiceUtils.getUserId(request),
+                clazzCourseId, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
 }

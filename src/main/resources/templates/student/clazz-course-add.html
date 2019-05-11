@@ -31,64 +31,81 @@
 <div class="x-body">
     <form class="layui-form">
         <div class="layui-form-item">
-            <label class="layui-form-label">班课名:</label>
-            <div class="layui-inline">
-                <input type="text" id="clazzCourseName" required
-                       lay-verify="required" autocomplete="off"
-                       class="layui-input">
+            <label class="layui-form-label">班课名</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="title" required
+                       lay-verify="required" placeholder="请输入标题"
+                       autocomplete="off" class="layui-input">
             </div>
         </div>
-        <div class="layui-inline">
-            <label class="layui-form-label">容纳人数：</label>
+        <div class="layui-form-item">
+            <label class="layui-form-label">类型选择框</label>
             <div class="layui-input-block">
-                <select id="galleryful" name="galleryful" lay-verify="required">
+                <select name="city" lay-verify="required">
                     <option value=""></option>
-                    <option value="0">50</option>
-                    <option value="1">100</option>
-                    <option value="2">150</option>
-                    <option value="3">200</option>
+                    <option value="0">Java</option>
+                    <option value="1">数据库</option>
+                    <option value="2">C</option>
+                    <option value="3">Python</option>
+                    <option value="4">C++</option>
                 </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开课单位类型</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="like[write]" title="学校">
+                <input type="checkbox" name="like[read]" title="培训机构" checked>
+                <input type="checkbox" name="like[dai]" title="个人">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">是否公开</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="switch" lay-skin="switch">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">详细描述</label>
+            <div class="layui-input-block">
+                <textarea name="desc" id="desc" placeholder="请输入内容"
+                          class="layui-textarea"></textarea>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="formDemo">
-                    创建
+                    立即提交
                 </button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置
                 </button>
             </div>
         </div>
-        <input type="hidden" id="accountId" required
-               lay-verify="required" autocomplete="off"
-               th:value="${session.userInfo?.accountId}"
-               class="layui-input">
     </form>
 </div>
 <script>
     layui.use(['form', 'layer'], function () {
-        var form = layui.form;
+        var form = layui.form
         form.on('submit(formDemo)', function (data) {
-            var clazzCourseName = $('#clazzCourseName').val();
-            var galleryful = $('#galleryful').val();
-            var accountId = $('#accountId').val();
-
+            var title = $('#title').val();
+            var desc = $('#desc').val();
             $.ajax({
                 type: "post",
                 url: "/clazzCourse/insert",
                 dataType: "json",
                 data: {
-                    clazzCourseName: clazzCourseName,
-                    galleryful: galleryful,
-                    teacherId: accountId
+                    title: title,
+                    desc: desc
                 },
                 success: function (data) {
-                    if (data.result === true) {
-                        layer.alert('创建成功');
+                    alert(data);
+                    if (data.status == 1) {
+                        $('#title').val("");
+                        $('#desc').val("");
+                        layer.alert('已经提交成功');
                     } else {
-                        layer.alert('创建失败,存在同名课程');
+                        alert("密码错误")
                     }
-
                 },
                 error: function () {
                     alert("网络错误");

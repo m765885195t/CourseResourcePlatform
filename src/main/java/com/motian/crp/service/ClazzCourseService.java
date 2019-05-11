@@ -31,14 +31,18 @@ public class ClazzCourseService {
     }
 
     @Transactional
-    public void insert(String teacherId, String clazzCourseName) {
-        manager.getByTeacherIdAndClazzCourseName(teacherId, clazzCourseName)
-                .orElseGet(() ->
-                        manager.save(new ClazzCourseData()
-                                .setTeacherId(teacherId)
-                                .setClazzCourseName(clazzCourseName)
-                                .setClazzCourseId(CrpServiceUtils.getRandomNum(NUMBER_RANDOM_RANGE_BYTES)))
-                );
+    public boolean insert(String teacherId, String clazzCourseName, int galleryful) {
+        if (manager.getByTeacherIdAndClazzCourseName(teacherId, clazzCourseName).isPresent()) {
+            log.info("ClazzCourseService::isPresent");
+            return false;
+        }
+        manager.save(new ClazzCourseData()
+                .setTeacherId(teacherId)
+                .setClazzCourseName(clazzCourseName)
+                .setClazzCourseId(CrpServiceUtils.getRandomNum(NUMBER_RANDOM_RANGE_BYTES))
+                .setGalleryful(galleryful)
+        );
+        return true;
     }
 
 
@@ -55,7 +59,7 @@ public class ClazzCourseService {
     }
 
     public void delete(long id) {
-        log.info("delete::id={}",id);
+        log.info("delete::id={}", id);
         manager.findById(id).ifPresent(manager::delete);
     }
 
@@ -67,9 +71,13 @@ public class ClazzCourseService {
         return manager.getByTeacherIdAndClazzCourseName(teacherId, clazzCourseName).orElse(null);
     }
 
-    public List<ClazzCourseData> listAllByTeacherId(String teacherId, int pageNumber, int pageSize) {
+    public List<ClazzCourseData> listAllByTeacherId(
+            String teacherId, long clazzCourseId, int pageNumber, int pageSize) {
+
         return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
-                .stream().filter(o -> o.getTeacherId().equals(teacherId))
+                .stream()
+                .filter(o -> clazzCourseId<0 || o.getClazzCourseId() == clazzCourseId)
+                .filter(o -> o.getTeacherId().equals(teacherId))
                 .collect(Collectors.toList());
     }
 }

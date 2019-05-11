@@ -2,6 +2,7 @@ package com.motian.crp.web;
 
 import com.google.common.collect.Maps;
 import com.motian.crp.service.ClazzChapterService;
+import com.motian.crp.utils.CrpServiceUtils;
 import com.motian.crp.utils.CrpWebUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class ClazzChapterController {
             @RequestParam(value = "clazzCourseName") String clazzCourseName) {
 
         Map<String, Object> model = Maps.newHashMap();
-        service.insert(clazzCourseId, order,clazzCourseName);
+        service.insert(clazzCourseId, order, clazzCourseName);
         model.put(RESULT, Boolean.TRUE);
         return model;
     }
@@ -75,13 +76,15 @@ public class ClazzChapterController {
 
     @GetMapping(value = "/listAll")
     public Map<String, Object> listAll(
-            @RequestParam(value = "clazzCourseId") long clazzCourseId,
+            @RequestParam(value = "clazzCourseName", required = false, defaultValue = "") String clazzCourseName,
+            @RequestParam(value = "clazzCourseId", required = false, defaultValue = "") String clazzCourseId,
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize,
             HttpServletRequest request, HttpServletResponse response) {
-
+        log.info("listAll::clazzCourseId={}", clazzCourseId);
         Map<String, Object> model = Maps.newHashMap();
-        model.put("data", service.listAll(clazzCourseId, pageNumber, pageSize));
+        model.put("data", service.listAll(CrpServiceUtils.getUserId(request),
+                clazzCourseId, clazzCourseName, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
 }

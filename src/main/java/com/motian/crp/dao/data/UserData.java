@@ -50,4 +50,7 @@ public class UserData extends BaseData {
 
     @ApiModelProperty(value = "手机号")
     private String cellphoneNumber = StringUtils.EMPTY;
+
+    @ApiModelProperty(value = "邮箱")
+    private String email = StringUtils.EMPTY;
 }

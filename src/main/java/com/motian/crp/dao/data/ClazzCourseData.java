@@ -32,4 +32,7 @@ public class ClazzCourseData extends BaseData {
 
     @ApiModelProperty(value = "班课名")
     private String clazzCourseName;
+
+    @ApiModelProperty(value = "容纳人数")
+    private int galleryful;
 }

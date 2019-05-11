@@ -34,15 +34,21 @@ public class CrpTestUtils {
         userService.registered("3", "3", STUDENTS.code);
 
         // 课程
-        clazzCourseService.insert("2", "测试课程1");
-        clazzCourseService.insert("2", "测试课程2");
-        ClazzCourseData clazzCourseData = clazzCourseService
-                .getByTeacherIdAndClazzCourseName("2", "测试课程2");
-
+        clazzCourseService.insert("2", "测试课程1", 10);
+        clazzCourseService.insert("2", "测试课程2", 10);
+        ClazzCourseData clazzCourseData1 = clazzCourseService
+                .getByTeacherIdAndClazzCourseName("2", "测试课程1");
         // 章节
-        clazzChapterService.insert(clazzCourseData.getClazzCourseId(),
-                1, clazzCourseData.getClazzCourseName() + "章节1");
-        clazzChapterService.insert(clazzCourseData.getClazzCourseId(),
-                2, clazzCourseData.getClazzCourseName() + "章节2");
+        clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
+                1, clazzCourseData1.getClazzCourseName() + "章节1");
+        clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
+                2, clazzCourseData1.getClazzCourseName() + "章节2");
+
+        ClazzCourseData clazzCourseData2 = clazzCourseService
+                .getByTeacherIdAndClazzCourseName("2", "测试课程2");
+        clazzChapterService.insert(clazzCourseData2.getClazzCourseId(),
+                1, clazzCourseData2.getClazzCourseName() + "章节1");
+        clazzChapterService.insert(clazzCourseData2.getClazzCourseId(),
+                2, clazzCourseData2.getClazzCourseName() + "章节2");
     }
 }

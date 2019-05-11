@@ -47,33 +47,6 @@ public class UserService {
                 .setUserType(userType));
     }
 
-    @Transactional
-    public UserData update(long id, String token, String nickname,
-                           int gender, String birthday, String cellphoneNumber)
-            throws Exception {
-        Optional<UserData> data = manager.findById(id);
-        if (!data.isPresent()) {
-            throw new Exception("The user does not exist. id=" + id);
-        }
-        if (!StringUtils.isBlank(token)) {
-            data.get().setToken(token);
-        }
-        if (!StringUtils.isBlank(nickname)) {
-            data.get().setNickname(nickname);
-        }
-
-        DataType.GenderType.getType(gender).ifPresent(
-                genderType -> data.get().setGender(genderType));
-
-        if (!StringUtils.isBlank(cellphoneNumber)) {
-            data.get().setCellphoneNumber(cellphoneNumber);
-        }
-        if (!StringUtils.isBlank(birthday)) {
-            data.get().setBirthday(birthday);
-        }
-        return manager.save(data.get());
-    }
-
     public void unsubscribe(long id) {
         manager.findById(id).ifPresent((o) -> manager.delete(o));
     }
@@ -102,4 +75,36 @@ public class UserService {
         return model;
     }
 
+    public boolean update(String accountId, String oldToken, String newToken, int gender,
+                          String birthday, String cellphoneNumber, String email) throws Exception {
+        Optional<UserData> data = manager.getByAccountId(accountId);
+        if (!data.isPresent()) {
+            throw new Exception("The user does not exist. accountId=" + accountId);
+        }
+
+        DataType.GenderType.getType(gender).ifPresent(
+                genderType -> data.get().setGender(genderType));
+
+        if (!StringUtils.isBlank(birthday)) {
+            data.get().setBirthday(birthday);
+        }
+
+        if (!StringUtils.isBlank(cellphoneNumber)) {
+            data.get().setCellphoneNumber(cellphoneNumber);
+        }
+
+        if (!StringUtils.isBlank(email)) {
+            data.get().setEmail(email);
+        }
+        manager.save(data.get());
+        if (!StringUtils.isBlank(oldToken)) {
+            if (data.get().getToken().equals(oldToken)) {
+                data.get().setToken(newToken);
+                manager.save(data.get());
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 }
