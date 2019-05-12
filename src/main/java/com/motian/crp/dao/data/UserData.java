@@ -1,5 +1,6 @@
 package com.motian.crp.dao.data;
 
+import com.motian.crp.constant.CrpConst;
 import com.motian.crp.constant.DataType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,7 +39,7 @@ public class UserData extends BaseData {
     private DataType.UserType userType;
 
     @ApiModelProperty(value = "用户昵称")
-    private String nickname = StringUtils.EMPTY;
+    private String nickname = CrpConst.DefaultValue.NICKNAME;
 
     @ApiModelProperty(value = "性别")
     @Enumerated(value = EnumType.STRING)
@@ -49,4 +50,7 @@ public class UserData extends BaseData {
 
     @ApiModelProperty(value = "手机号")
     private String cellphoneNumber = StringUtils.EMPTY;
+
+    @ApiModelProperty(value = "邮箱")
+    private String email = StringUtils.EMPTY;
 }

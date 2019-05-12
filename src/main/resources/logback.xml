@@ -20,7 +20,7 @@
         </rollingPolicy>
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
-                %d{yyyy-MM-dd HH:mm:ss} -%msg%n
+                %d{yyyy-MM-dd HH:mm:ss}  %-5level %logger{36} - %msg%n
             </Pattern>
         </layout>
     </appender>
@@ -30,7 +30,6 @@
     </root>
 
     <logger name="com.motian.crp" level="debug" additivity="false">
-        <!--<appender-ref ref="logFile"/>-->
-        <appender-ref ref="console"/>
+        <appender-ref ref="logFile"/>
     </logger>
 </configuration>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.1</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/X-admin/css/font.css}">
+    <link rel="stylesheet" th:href="@{/X-admin/css/xadmin.css}">
+    <script type="text/javascript"
+            src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script charset="utf-8" th:src="@{/X-admin/lib/layui/layui.js}"></script>
+    <script type="text/javascript" th:src="@{/X-admin/js/xadmin.js}"></script>
+    <script type="text/javascript" th:src="@{/X-admin/js/cookie.js}"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+<div class="x-body">
+    <div class="demoTable">
+        搜索班课号：
+        <div class="layui-inline">
+            <input class="layui-input" name="clazzCourseId" id="demoReload"
+                   autocomplete="off">
+        </div>
+        <button class="layui-btn" data-type="reload"><i class="layui-icon">&#xe615;</i>
+        </button>
+    </div>
+
+    <table style="display: none;" class="layui-hide" id="clazz_course_table"
+           lay-filter="clazz_course_table">
+    </table>
+</div>
+</body>
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+
+<script th:inline="none">
+    $(function () {
+        layui.use(['form', 'table', 'layer'], function () {
+            var form = layui.form;
+            var table = layui.table;
+            var layer = layui.layer;
+
+            //执行一个 table 实例
+            table.render({
+                elem: '#clazz_course_table',//绑定table id
+                cellMinWidth: 80,
+                url: '/studentClazzCourseInfo/listAll',
+                id: 'list',
+                even: true,
+                toolbar: '#toolbarDemo',
+                page: true,
+                limit: 10,
+                limits: [10, 20, 50, 100],
+                cols: [[
+                    {type: "checkbox", fixed: "left", width: 50},
+                    {title: '序号', field: 'id', width: 70},
+                    {title: '班课号', field: 'clazzCourseId', sort: true},
+                    {title: '班课名', sort: true, field: 'clazzCourseName'},
+                    {title: '创建老师', sort: true, field: 'teacherName'},
+                    {title: '加入班课的顺序', sort: true, field: 'sequence'},
+                    {title: '添加时间', sort: true, field: 'addTime'},
+                    {title: '更新时间', sort: true, field: 'updateTime'},
+                ]]
+            });
+
+
+            // 搜索数据
+            var $ = layui.$, active = {
+                reload: function () {
+                    var demoReload = $('#demoReload');
+
+                    //执行重载
+                    table.reload('list', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            clazzCourseId: demoReload.val(),
+                            clazzCourseName: demoReload.val(),
+                        }
+                    });
+                }
+            };
+            $('.demoTable .layui-btn').on('click', function () {
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        })
+    });
+</script>
+
+
+</html>

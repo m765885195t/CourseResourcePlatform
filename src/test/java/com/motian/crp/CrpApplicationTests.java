@@ -9,8 +9,4 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(classes = CrpApplication.class)
 public class CrpApplicationTests {
 
-    @Test
-    public void contextLoads() {
-    }
-
 }
