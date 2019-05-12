@@ -35,10 +35,11 @@ public class WebConfigurer implements WebMvcConfigurer {
         //登录
         excludePaths.add("/");
         excludePaths.add("/login");
+        excludePaths.add("/register");
+        excludePaths.add("/user/registered");
         excludePaths.add("/welcome");
 //        excludePaths.add("/error");
 
-        registry.addInterceptor(crpInterceptor).
-                addPathPatterns("/**").excludePathPatterns(excludePaths);
+        registry.addInterceptor(crpInterceptor).addPathPatterns("/**").excludePathPatterns(excludePaths);
     }
 }

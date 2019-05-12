@@ -22,5 +22,6 @@ public interface CrpConst {
 
     interface DefaultValue {
         String NICKNAME = "motian";
+        String TOKEN = "password";
     }
 }

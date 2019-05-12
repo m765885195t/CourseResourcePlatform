@@ -85,4 +85,22 @@ public class ClazzCourseController {
                 clazzCourseId, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
+
+    @GetMapping(value = "/selectClazzCourse")
+    public Map<Long, String> selectClazzCourse(HttpServletRequest request, HttpServletResponse response) {
+        return service.selectClazzCourse(CrpServiceUtils.getUserId(request));
+    }
+
+    @GetMapping(value = "/listAll")
+    public Map<String, Object> listAll(
+            @RequestParam(value = "clazzCourseId", required = false, defaultValue = "-1") String clazzCourseId,
+            @RequestParam(value = "clazzCourseName", required = false, defaultValue = "-1") String clazzCourseName,
+            @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize,
+            HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> model = Maps.newHashMap();
+
+        model.put("data", service.listAll(clazzCourseId, clazzCourseName, pageNumber, pageSize));
+        return CrpWebUtils.Model(model);
+    }
 }

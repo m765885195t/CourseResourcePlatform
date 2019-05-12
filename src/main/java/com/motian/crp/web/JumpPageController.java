@@ -39,4 +39,51 @@ public class JumpPageController {
     private String clazzChapterList() {
         return "/teacher/clazz-course-chapter-list";
     }
+
+    @GetMapping("/teacher/clazzStudentList")
+    private String clazzStudentList() {
+        return "/teacher/clazz-course-student-list";
+    }
+
+    @GetMapping("/teacher/questionBankList")
+    private String questionBankList() {
+        return "/teacher/question-bank-list";
+    }
+
+    // 管理员相关
+    @GetMapping("/admin/index")
+    private String toAdminIndex() {
+        return "/admin/index";
+    }
+
+    @GetMapping("/admin/teacherList")
+    private String teacherList() {
+        return "/admin/teacher-list";
+    }
+
+    @GetMapping("/admin/studentList")
+    private String studentList() {
+        return "/admin/student-list";
+    }
+
+    @GetMapping("/admin/addUser")
+    private String addUser() {
+        return "/admin/user-add";
+    }
+
+    // 学生相关
+    @GetMapping("/student/index")
+    private String toStudentIndex() {
+        return "/student/index";
+    }
+
+    @GetMapping("/student/courseList")
+    private String courseList() {
+        return "/student/course-list";
+    }
+
+    @GetMapping("/student/joinCourseList")
+    private String joinCourseList() {
+        return "/student/join-course-list";
+    }
 }

@@ -39,15 +39,11 @@
         </button>
     </div>
     <table style="display: none;" class="layui-hide"
-           id="clazz_course_chapter_table"
-           lay-filter="clazz_course_chapter_table">
+           id="clazz_course_student_table"
+           lay-filter="clazz_course_student_table">
     </table>
 </div>
 </body>
-
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
 
 
 <script th:inline="none">
@@ -59,9 +55,9 @@
 
             //执行一个 table 实例
             table.render({
-                elem: '#clazz_course_chapter_table',//绑定table id
+                elem: '#clazz_course_student_table',//绑定table id
                 cellMinWidth: 80,
-                url: '/clazzChapter/listAll',
+                url: '/studentClazzCourseInfo/listAll',
                 id: 'list',
                 even: true,
                 toolbar: '#toolbarDemo',
@@ -73,73 +69,14 @@
                     {type: "checkbox", fixed: "left", width: 50},
                     {title: '序号', field: 'id', width: 70},
                     {title: '班课号', field: 'clazzCourseId', sort: true},
-                    {
-                        title: '章节名',
-                        sort: true,
-                        field: 'clazzChapterName',
-                        edit: 'text'
-                    },
-                    {title: '所在班课的下标', sort: true, field: 'sequence'},
+                    {title: '班课名', field: 'clazzCourseName', sort: true},
+                    {title: '学生id', sort: true, field: 'studentId'},
+                    {title: '加入班课的顺序', sort: true, field: 'sequence'},
                     {title: '添加时间', sort: true, field: 'addTime'},
-                    {title: '更新时间', sort: true, field: 'updateTime'},
-                    {title: '操作', toolbar: '#barDemo'}
+                    {title: '更新时间', sort: true, field: 'updateTime'}
                 ]]
             });
 
-
-            //监听行工具(里面为表格的 lay-filter属性)
-            table.on('tool(clazz_course_chapter_table)', function (obj) {
-                var data = obj.data;
-                if (obj.event === 'del') {
-                    layer.confirm('确定删除？', function (index) {
-                        $.ajax({
-                            url: '/clazzChapter/delete',
-                            type: "POST",
-                            data: {'id': data.id},
-                            dataType: "json",
-                            success: function (data) {
-                                if (data == null) {
-                                    layer.msg("删除失败", {icon: 5});
-                                } else {
-                                    layer.msg("删除成功", {icon: 1});
-
-                                    obj.del();
-                                    layer.close(index);
-                                }
-                            },
-                            error: function () {
-                                alert(data);
-                            }
-                        });
-                    });
-                } else if (obj.event === 'edit') {
-                    layer.msg('ID：' + data.id + ' 的编辑操作');
-                }
-            });
-
-            //监听单元格编辑
-            table.on('edit(clazz_course_chapter_table)', function (obj) {
-                var value = obj.value //得到修改后的值
-                    , data = obj.data //得到所在行所有键值
-                    , field = obj.field; //得到字段
-                $.ajax({
-                    url: '/clazzChapter/update',
-                    type: "POST",
-                    data: {
-                        'id': data.id,
-                        'clazzCourseName': value
-                    },
-                    dataType: "json",
-                    success: function (data) {
-                        if (data.result === true) {
-                            layer.msg("班课名更新成功", {icon: 1});
-                        }
-                    },
-                    error: function () {
-                        alert(data);
-                    }
-                });
-            });
 
             // 搜索数据
             var $ = layui.$, active = {
@@ -152,8 +89,8 @@
                             curr: 1 //重新从第 1 页开始
                         }
                         , where: {
-                            clazzCourseName:demoReload.val(),
-                            clazzCourseId:demoReload.val(),
+                            clazzCourseName: demoReload.val(),
+                            clazzCourseId: demoReload.val(),
                         }
                     });
                 }

@@ -12,4 +12,6 @@ import java.util.Optional;
 public interface ClazzChapterManager extends JpaRepository<ClazzChapterData, Long> {
     Optional<ClazzChapterData> getByClazzCourseIdAndSequenceAndClazzChapterName(
             long clazzCourseId, int sequence, String clazzChapterName);
+
+    void deleteByClazzCourseId(long clazzCourseId);
 }

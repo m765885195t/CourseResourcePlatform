@@ -2,7 +2,6 @@ package com.motian.crp.service;
 
 import com.motian.crp.dao.data.QuestionBankData;
 import com.motian.crp.dao.manager.QuestionBankManager;
-import com.motian.crp.utils.CrpServiceUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -24,14 +23,11 @@ public class QuestionBankService {
     private QuestionBankManager manager;
 
     @Transactional
-    public void insert(String teacherId, String studentId, long clazzCourseId,
-                       long learningTime) {
+    public void insert(String teacherId, String content) {
         manager.save(new QuestionBankData()
-                .setQuestionBankId(CrpServiceUtils.generateId())
                 .setTeacherId(teacherId)
-                .setStudentId(studentId)
-                .setClazzCourseId(clazzCourseId)
-                .setLearningTime(learningTime));
+                .setContent(content)
+        );
     }
 
 
@@ -45,15 +41,6 @@ public class QuestionBankService {
         if (!StringUtils.isBlank(teacherId)) {
             data.get().setTeacherId(teacherId);
         }
-        if (!StringUtils.isBlank(studentId)) {
-            data.get().setStudentId(studentId);
-        }
-        if (clazzCourseId > 0) {
-            data.get().setClazzCourseId(clazzCourseId);
-        }
-        if (learningTime > 0) {
-            data.get().setLearningTime(learningTime);
-        }
 
         return manager.save(data.get());
     }
@@ -63,13 +50,11 @@ public class QuestionBankService {
     }
 
 
-    public List<QuestionBankData> listAllByTeacherId(String teacherId, int pageNumber, int pageSize) {
+    public List<QuestionBankData> listAll(String teacherId, long questionBankId, int pageNumber, int pageSize) {
         return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
-                .stream().filter(o -> o.getTeacherId().equals(teacherId))
+                .stream()
+                .filter(o -> teacherId.equals(o.getTeacherId()))
+                .filter(o -> questionBankId < 0 || questionBankId == o.getId())
                 .collect(Collectors.toList());
-    }
-
-    public List<QuestionBankData> listAll(int pageNumber, int pageSize) {
-        return manager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent();
     }
 }

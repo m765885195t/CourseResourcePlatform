@@ -40,7 +40,7 @@
 </body>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="registration">报名</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 
@@ -55,7 +55,7 @@
             table.render({
                 elem: '#clazz_course_table',//绑定table id
                 cellMinWidth: 80,
-                url: '/clazzCourse/listAll',
+                url: '/studentClazzCourseInfo/listAll',
                 id: 'list',
                 even: true,
                 toolbar: '#toolbarDemo',
@@ -67,42 +67,13 @@
                     {title: '序号', field: 'id', width: 70},
                     {title: '班课号', field: 'clazzCourseId', sort: true},
                     {title: '班课名', sort: true, field: 'clazzCourseName'},
-                    {title: '创建老师', sort: true, field: 'nickname'},
-                    {title: '已参加人数', sort: true, field: 'registrationNumber'},
-                    {title: '容纳人数', sort: true, field: 'galleryful'},
+                    {title: '创建老师', sort: true, field: 'teacherName'},
+                    {title: '加入班课的顺序', sort: true, field: 'sequence'},
                     {title: '添加时间', sort: true, field: 'addTime'},
                     {title: '更新时间', sort: true, field: 'updateTime'},
-                    {title: '操作', toolbar: '#barDemo'}
                 ]]
             });
 
-            //监听行工具(里面为表格的 lay-filter属性)
-            table.on('tool(clazz_course_table)', function (obj) {
-                var data = obj.data;
-                if (obj.event === 'registration') {
-                    layer.confirm('确定报名此班课？', function (index) {
-                        $.ajax({
-                            url: '/studentClazzCourseInfo/insert',
-                            type: "POST",
-                            data: {'clazzCourseId': data.clazzCourseId},
-                            dataType: "json",
-                            success: function (data) {
-                                if (data == null) {
-                                    layer.msg("报名失败,已达人数上限", {icon: 5});
-                                } else {
-                                    layer.msg("报名成功", {icon: 1});
-                                    layer.close(index);
-                                }
-                            },
-                            error: function () {
-                                alert(data);
-                            }
-                        });
-                    });
-                } else if (obj.event === 'edit') {
-                    layer.msg('ID：' + data.id + ' 的编辑操作');
-                }
-            });
 
             // 搜索数据
             var $ = layui.$, active = {
@@ -116,6 +87,7 @@
                         }
                         , where: {
                             clazzCourseId: demoReload.val(),
+                            clazzCourseName: demoReload.val(),
                         }
                     });
                 }

@@ -66,11 +66,11 @@
                                 window.location.href = "student/index";
                             }
                         } else {
-                            alert("用户/密码错误")
+                            layer.alert("用户/密码错误")
                         }
                     },
                     error: function () {
-                        alert("网络错误");
+                        layer.alert("网络错误");
                     }
                 });
                 return false;

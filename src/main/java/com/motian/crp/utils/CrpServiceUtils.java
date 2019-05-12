@@ -1,7 +1,7 @@
 package com.motian.crp.utils;
 
-import com.motian.crp.constant.DataType;
 import com.motian.crp.dao.data.UserData;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +16,7 @@ import static com.motian.crp.constant.CrpConst.StatusField.USER_INFO;
  * @Author: motian
  * @Email: motian@xiyoulinux.org
  */
+@Slf4j
 public class CrpServiceUtils {
     public static final Map<Integer, Integer> ValueMap = new HashMap<Integer, Integer>() {
         {
@@ -36,14 +37,14 @@ public class CrpServiceUtils {
     }
 
     public static String getUserId(HttpServletRequest request) {
-        String teacherId = StringUtils.EMPTY;
+        String userID = StringUtils.EMPTY;
         UserData userData = (UserData) request.getSession().getAttribute(USER_INFO);
         if (userData != null) {
-            if (userData.getUserType() == DataType.UserType.TEACHER) {
-                teacherId = userData.getAccountId();
-            }
+            userID = userData.getAccountId();
         }
-        return teacherId;
+        log.info("getUserId::userID={}", userID);
+
+        return userID;
     }
 
 }

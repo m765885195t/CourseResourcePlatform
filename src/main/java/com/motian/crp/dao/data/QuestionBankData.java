@@ -18,15 +18,9 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "QuestionBankData", description = "题库")
 public class QuestionBankData extends BaseData {
-
-    private long questionBankId;
-
+    @ApiModelProperty(value = "创建者id")
     private String teacherId;
 
-    private String studentId;
-
-    private long clazzCourseId;
-
-    private long learningTime;
-
+    @ApiModelProperty(value = "题目内容")
+    private String content;
 }

@@ -64,7 +64,7 @@
                 limits: [10, 20, 50, 100],
                 cols: [[
                     {type: "checkbox", fixed: "left", width: 50},
-                    {title: '序号', field: 'id', width: 70, type: 'numbers'},
+                    {title: '序号', field: 'id', width: 70},
                     {title: '班课号', field: 'clazzCourseId', sort: true},
                     {
                         title: '班课名',
@@ -73,6 +73,8 @@
                         edit: 'text'
                     },
                     {title: '容纳人数', sort: true, field: 'galleryful'},
+                    {title: '添加时间', sort: true, field: 'addTime'},
+                    {title: '更新时间', sort: true, field: 'updateTime'},
                     {title: '操作', toolbar: '#barDemo'}
                 ]]
             });
@@ -82,7 +84,7 @@
             table.on('tool(clazz_course_table)', function (obj) {
                 var data = obj.data;
                 if (obj.event === 'del') {
-                    layer.confirm('确定删除序号为 ' + data.id + ' 的课程？', function (index) {
+                    layer.confirm('确定删除此班课？这会删除此班课下的所有相关信息', function (index) {
                         $.ajax({
                             url: '/clazzCourse/delete',
                             type: "POST",
@@ -92,6 +94,7 @@
                                 if (data == null) {
                                     layer.msg("删除失败", {icon: 5});
                                 } else {
+                                    layer.msg("删除成功", {icon: 1});
                                     //删除这一行
                                     obj.del();
                                     layer.close(index);

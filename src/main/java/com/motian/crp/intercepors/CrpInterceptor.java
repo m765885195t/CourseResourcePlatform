@@ -21,7 +21,7 @@ public class CrpInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object handler) throws Exception {
-        log.info("preHandle::uri={}",request.getRequestURI());
+        log.info("preHandle::uri={}", request.getRequestURI());
         try {
             Boolean loginState = (Boolean) request.getSession().getAttribute(RESULT);
             if (loginState == null || !loginState) {

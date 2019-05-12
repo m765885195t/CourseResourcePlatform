@@ -29,7 +29,11 @@
 
 <body>
 <div class="x-body">
-    <form class="layui-form">
+    <form class="layui-form" lay-filter="demo1">
+        <fieldset class="layui-elem-field layui-field-title"
+                  style="margin-top: 30px;">
+            <legend>添加班课</legend>
+        </fieldset>
         <div class="layui-form-item">
             <label class="layui-form-label">班课名:</label>
             <div class="layui-inline">
@@ -53,7 +57,7 @@
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="formDemo">
-                    创建
+                    创建此班课
                 </button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置
                 </button>
@@ -64,8 +68,72 @@
                th:value="${session.userInfo?.accountId}"
                class="layui-input">
     </form>
+
+    <form class="layui-form" lay-filter="demo2">
+        <fieldset class="layui-elem-field layui-field-title"
+                  style="margin-top: 30px;">
+            <legend>给指定班课添加章节</legend>
+        </fieldset>
+
+        <div>
+            <div class="layui-inline">
+                <label class="layui-form-label">班课列表：</label>
+                <div class="layui-input-block">
+                    <select id="clazzCourseList" name="clazzCourseList"
+                            lay-verify="required">
+                        <option value="">请选择班课：</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">章节名:</label>
+            <div class="layui-inline">
+                <input type="text" id="clazzCourseChapterName" required
+                       lay-verify="required" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">所在班课顺序:</label>
+            <div class="layui-inline">
+                <input type="text" id="clazzCourseChapterOrder" required
+                       lay-verify="required|number" autocomplete="off"
+                       class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="demo2">
+                    创建此章节
+                </button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
+
 <script>
+    // 获取班课列表
+    $.ajax({
+        url: "/clazzCourse/selectClazzCourse",
+        type: "GET",
+        dataType: "json",
+        success: function (result) {
+            var list = result;    //返回的数据
+            var server = document.getElementById("clazzCourseList"); //server为select定义的id
+            for (var p in list) {
+                var option = document.createElement("option");  // 创建添加option属性
+                option.setAttribute("value", p); // 给option的value添加值
+                option.innerText = list[p];     // 打印option对应的纯文本
+                server.appendChild(option);           //给select添加option子标签
+
+            }
+            form.render("clazzCourseList", '2'); //更新 lay-filter="test2" 所在容器内的全部 select 状态
+        }
+    });
+
     layui.use(['form', 'layer'], function () {
         var form = layui.form;
         form.on('submit(formDemo)', function (data) {
@@ -84,9 +152,39 @@
                 },
                 success: function (data) {
                     if (data.result === true) {
-                        layer.alert('创建成功');
+                        layer.alert('班课创建成功!');
                     } else {
-                        layer.alert('创建失败,存在同名课程');
+                        layer.alert('班课创建失败,已存在同名课程！！！');
+                    }
+
+                },
+                error: function () {
+                    alert("网络错误");
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(demo2)', function (data) {
+            var clazzCourseChapterName = $('#clazzCourseChapterName').val();
+            var clazzCourseChapterOrder = $('#clazzCourseChapterOrder').val();
+            var clazzCourseName = $('#clazzCourseList').key();
+            alert("clazzCourseChapterName" + clazzCourseChapterName + " clazzCourseChapterOrder" +
+                clazzCourseChapterOrder + "clazzCourseList" + clazzCourseChapterOrder);
+            $.ajax({
+                type: "post",
+                url: "/clazzChapter/insert",
+                dataType: "json",
+                data: {
+                    clazzCourseName: clazzCourseName,
+                    clazzCourseChapterName: clazzCourseChapterName,
+                    clazzCourseChapterOrder: clazzCourseChapterOrder
+                },
+                success: function (data) {
+                    if (data.result === true) {
+                        layer.alert('章节创建按成功');
+                    } else {
+                        layer.alert('章节创建失败,已存在同顺序的章节！！！');
                     }
 
                 },
@@ -97,6 +195,7 @@
             return false;
         });
     });
+
 </script>
 </body>
 
