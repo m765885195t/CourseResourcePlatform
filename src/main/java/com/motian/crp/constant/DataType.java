@@ -15,7 +15,8 @@ public class DataType {
 
         MAN(2),
 
-        WOMAN(3),;
+        WOMAN(3),
+        ;
         public final int code;
 
         public static Optional<GenderType> getType(int code) {
@@ -37,7 +38,8 @@ public class DataType {
 
         TEACHER(2),
 
-        STUDENTS(3),;
+        STUDENTS(3),
+        ;
 
         public final int code;
 
@@ -59,7 +61,12 @@ public class DataType {
     public enum ResourceType {
         VIDEO(1),
 
-        AUDIO(2),;
+        AUDIO(2),
+
+        LINK(3),
+
+        DOCUMENT(4),
+        ;
         public final int code;
 
         public static Optional<ResourceType> getType(int code) {

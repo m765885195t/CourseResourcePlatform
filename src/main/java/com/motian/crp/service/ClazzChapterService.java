@@ -37,10 +37,16 @@ public class ClazzChapterService {
     }
 
     @Transactional
-    public boolean insert(String teacherId, String clazzCourseName, int order, String clazzChapterName) {
+    public boolean insert(long clazzCourseId, int order, String clazzChapterName) {
+        log.info("insert::clazzCourseId={},order={},clazzChapterName={}",
+                clazzCourseId, order, clazzChapterName);
         Optional<ClazzCourseData> clazzCourseData = clazzCourseManager
-                .getByTeacherIdAndClazzCourseName(teacherId, clazzCourseName);
+                .getByClazzCourseId(clazzCourseId);
         if (!clazzCourseData.isPresent()) {
+            return false;
+        }
+        if (clazzChapterManager.getByClazzCourseIdAndSequence(
+                clazzCourseData.get().getClazzCourseId(), order).isPresent()) {
             return false;
         }
         clazzChapterManager.save(new ClazzChapterData()
@@ -67,7 +73,7 @@ public class ClazzChapterService {
         clazzChapterManager.findById(id).ifPresent(clazzChapterManager::delete);
     }
 
-   public void deleteByClazzCourseId(long clazzCourseId) {
+    public void deleteByClazzCourseId(long clazzCourseId) {
         clazzChapterManager.deleteByClazzCourseId(clazzCourseId);
     }
 

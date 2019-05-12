@@ -19,6 +19,8 @@ import javax.persistence.Table;
 @EqualsAndHashCode(callSuper = true)
 @ApiModel(value = "ResourceLibraryData", description = "资源库信息")
 public class ResourceLibraryData extends BaseData {
+    @ApiModelProperty(value = "资源名称")
+    private String resourceName;
 
     @ApiModelProperty(value = "资源类型")
     private DataType.ResourceType resourceType;
@@ -26,6 +28,6 @@ public class ResourceLibraryData extends BaseData {
     @ApiModelProperty(value = "提交用户")
     private String committer;
 
-    @ApiModelProperty(value = "资源uri")
-    private long resourceUri;
+    @ApiModelProperty(value = "资源存储的uri")
+    private String resourceUri;
 }

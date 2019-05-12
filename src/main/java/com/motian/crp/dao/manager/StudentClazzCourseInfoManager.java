@@ -16,5 +16,7 @@ public interface StudentClazzCourseInfoManager extends JpaRepository<StudentClaz
 
     List<StudentClazzCourseInfoData> getByStudentId(String studentId, Pageable pageable);
 
+    List<StudentClazzCourseInfoData> getByTeacherId(String teacherId, Pageable pageable);
+
     void deleteByClazzCourseId(long clazzCourseId);
 }

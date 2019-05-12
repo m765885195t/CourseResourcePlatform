@@ -1,9 +1,11 @@
 package com.motian.crp.utils;
 
+import com.motian.crp.constant.DataType;
 import com.motian.crp.dao.data.ClazzCourseData;
 import com.motian.crp.service.ClazzChapterService;
 import com.motian.crp.service.ClazzCourseService;
 import com.motian.crp.service.QuestionBankService;
+import com.motian.crp.service.ResourceService;
 import com.motian.crp.service.StudentClazzCourseInfoService;
 import com.motian.crp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,8 @@ public class CrpTestUtils {
     private StudentClazzCourseInfoService studentClazzCourseInfoService;
     @Autowired
     private QuestionBankService questionBankService;
+    @Autowired
+    private ResourceService resourceService;
 
     @PostConstruct
     public void init() throws Exception {
@@ -41,7 +45,21 @@ public class CrpTestUtils {
         // 创建学生与课程信息
         initStudent("3");
         // 创建问题数据
-        initQuestion("1");
+
+        initQuestion("2");
+        // 创建资源
+        initResource("2");
+    }
+
+    private void initResource(String value) {
+        resourceService.insert("资源1", value,
+                DataType.ResourceType.VIDEO, "/disk/1");
+        resourceService.insert("资源2", value,
+                DataType.ResourceType.AUDIO, "/disk/2");
+        resourceService.insert("资源3", value,
+                DataType.ResourceType.LINK, "/disk/3");
+        resourceService.insert("资源4", value,
+                DataType.ResourceType.DOCUMENT, "/disk/4");
     }
 
     private void initAdmin(String value) {
@@ -66,9 +84,9 @@ public class CrpTestUtils {
         ClazzCourseData clazzCourseData1 = clazzCourseService
                 .getByTeacherIdAndClazzCourseName(value, "测试课程" + value);
         // 章节
-        clazzChapterService.insert(value, clazzCourseData1.getClazzCourseName(),
+        clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
                 1, clazzCourseData1.getClazzCourseName() + "章节1");
-        clazzChapterService.insert(value, clazzCourseData1.getClazzCourseName(),
+        clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
                 2, clazzCourseData1.getClazzCourseName() + "章节2");
 
         // 参加课程

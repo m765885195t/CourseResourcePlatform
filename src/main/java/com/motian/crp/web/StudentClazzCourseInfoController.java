@@ -44,15 +44,17 @@ public class StudentClazzCourseInfoController {
     }
 
 
-    @GetMapping(value = "/listAllByStudentId")
-    public Map<String, Object> listAllByStudentId(
-            @RequestParam(value = "studentId") String studentId,
+    @GetMapping(value = "/listAllByTeacherId")
+    public Map<String, Object> listAllByTeacherId(
+            @RequestParam(value = "clazzCourseName", required = false, defaultValue = "") String clazzCourseName,
+            @RequestParam(value = "clazzCourseId", required = false, defaultValue = "") String clazzCourseId,
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize,
             HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> model = Maps.newHashMap();
-        model.put("data", service.listAllByStudentId(studentId, pageNumber, pageSize));
+        model.put("data", service.listAllByTeacherId(CrpServiceUtils.getUserId(request),
+                clazzCourseName, clazzCourseId, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
 

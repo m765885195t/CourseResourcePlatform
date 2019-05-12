@@ -50,6 +50,11 @@ public class JumpPageController {
         return "/teacher/question-bank-list";
     }
 
+    @GetMapping("/teacher/resourceList")
+    private String resourceList() {
+        return "/teacher/resource-list";
+    }
+
     // 管理员相关
     @GetMapping("/admin/index")
     private String toAdminIndex() {

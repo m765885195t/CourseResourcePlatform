@@ -10,8 +10,7 @@ import java.util.Optional;
  * @Email: motian@xiyoulinux.org
  */
 public interface ClazzChapterManager extends JpaRepository<ClazzChapterData, Long> {
-    Optional<ClazzChapterData> getByClazzCourseIdAndSequenceAndClazzChapterName(
-            long clazzCourseId, int sequence, String clazzChapterName);
+    Optional<ClazzChapterData> getByClazzCourseIdAndSequence(long clazzCourseId, int sequence);
 
     void deleteByClazzCourseId(long clazzCourseId);
 }

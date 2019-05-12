@@ -26,7 +26,7 @@
     <ul class="layui-nav right" lay-filter="">
         <li class="layui-nav-item left">
             当前用户：<span
-                th:text="${session.userInfo?.nickname}"></span>
+                th:text="${session.userInfo?.accountId}"></span>
             <dl class="layui-nav-child">
                 <dd><a href="/cancellation">注销</a></dd>
             </dl>
@@ -98,14 +98,6 @@
                         </a>
                     </li>
                 </ul>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="/teacher/questionBankList">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>题库列表</cite>
-                        </a>
-                    </li>
-                </ul>
             </li>
             <li>
                 <a href="javascript:;">
@@ -121,7 +113,7 @@
                         </a>
                     </li>
                     <li>
-                        <a _href="clazz-course-add.html">
+                        <a _href="/teacher/resourceList">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>资源列表</cite>
                         </a>

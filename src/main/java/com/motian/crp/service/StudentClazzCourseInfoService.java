@@ -64,6 +64,7 @@ public class StudentClazzCourseInfoService {
                 .setClazzCourseId(clazzCourseId)
                 .setSequence(gealleryful + 1)
                 .setTeacherName(userManager.getByAccountId(clazzCourseData.get().getTeacherId()).get().getNickname())
+                .setTeacherId(clazzCourseData.get().getTeacherId())
                 .setClazzCourseName(clazzCourseData.get().getClazzCourseName())
         );
         return true;
@@ -84,12 +85,37 @@ public class StudentClazzCourseInfoService {
     }
 
 
-    public List<StudentClazzCourseInfoData> listAllByStudentId(String studentId, int pageNumber, int pageSize) {
-        return studentClazzCourseInfoManager.findAll(PageRequest.of(pageNumber - 1, pageSize)).getContent()
-                .stream().filter(o -> o.getStudentId().equals(studentId))
+    public List<StudentClazzCourseInfoData> listAllByTeacherId(String userId, String clazzCourseName, String clazzCourseId, int pageNumber, int pageSize) {
+        Set<StudentClazzCourseInfoData> dataList = Sets.newHashSet();
+        dataList.addAll(listByTeacherIdAndClazzCourseId(userId, clazzCourseId, pageNumber, pageSize));
+        dataList.addAll(listByTeacherIdAndClazzCourseName(userId, clazzCourseName, pageNumber, pageSize));
+        log.info("dataList::dataList={}", dataList);
+        return new ArrayList<>(dataList);
+    }
+
+    private List<StudentClazzCourseInfoData> listByTeacherIdAndClazzCourseId(
+            String userId, String clazzCourseId, int pageNumber, int pageSize) {
+        log.info("listAll::clazzCourseId={}", clazzCourseId);
+        int ccId = -1;
+        try {
+            ccId = Integer.parseInt(clazzCourseId);
+        } catch (NumberFormatException ignore) {
+        }
+
+        int finalCcId = ccId;
+        return studentClazzCourseInfoManager.getByTeacherId(userId, PageRequest.of(pageNumber - 1, pageSize))
+                .stream()
+                .filter(o -> finalCcId < 0 || o.getClazzCourseId() == finalCcId)
                 .collect(Collectors.toList());
     }
 
+    private List<StudentClazzCourseInfoData> listByTeacherIdAndClazzCourseName(
+            String userId, String clazzCourseName, int pageNumber, int pageSize) {
+        return studentClazzCourseInfoManager.getByTeacherId(userId, PageRequest.of(pageNumber - 1, pageSize))
+                .stream()
+                .filter(o -> StringUtils.isBlank(clazzCourseName) || o.getClazzCourseName().equals(clazzCourseName))
+                .collect(Collectors.toList());
+    }
 
     public List<StudentClazzCourseInfoData> listAll(String userId, String clazzCourseId,
                                                     String clazzCourseName, int pageNumber, int pageSize) {

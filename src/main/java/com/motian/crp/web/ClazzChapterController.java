@@ -35,14 +35,13 @@ public class ClazzChapterController {
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(
-            @RequestParam(value = "clazzCourseName") String clazzCourseName,
+            @RequestParam(value = "clazzCourseId") long clazzCourseId,
             @RequestParam(value = "clazzCourseChapterOrder") int order,
             @RequestParam(value = "clazzChapterName") String clazzChapterName,
             HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> model = Maps.newHashMap();
-        model.put(RESULT, service.insert(CrpServiceUtils.getUserId(request),
-                clazzCourseName, order, clazzChapterName));
+        model.put(RESULT, service.insert(clazzCourseId, order, clazzChapterName));
         return model;
     }
 

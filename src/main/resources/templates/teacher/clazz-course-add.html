@@ -168,16 +168,14 @@
         form.on('submit(demo2)', function (data) {
             var clazzCourseChapterName = $('#clazzCourseChapterName').val();
             var clazzCourseChapterOrder = $('#clazzCourseChapterOrder').val();
-            var clazzCourseName = $('#clazzCourseList').key();
-            alert("clazzCourseChapterName" + clazzCourseChapterName + " clazzCourseChapterOrder" +
-                clazzCourseChapterOrder + "clazzCourseList" + clazzCourseChapterOrder);
+            var clazzCourseId = $('#clazzCourseList').val();
             $.ajax({
                 type: "post",
                 url: "/clazzChapter/insert",
                 dataType: "json",
                 data: {
-                    clazzCourseName: clazzCourseName,
-                    clazzCourseChapterName: clazzCourseChapterName,
+                    clazzCourseId: clazzCourseId,
+                    clazzChapterName: clazzCourseChapterName,
                     clazzCourseChapterOrder: clazzCourseChapterOrder
                 },
                 success: function (data) {
@@ -186,7 +184,6 @@
                     } else {
                         layer.alert('章节创建失败,已存在同顺序的章节！！！');
                     }
-
                 },
                 error: function () {
                     alert("网络错误");
