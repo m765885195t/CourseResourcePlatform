@@ -1,13 +1,15 @@
 package com.motian.crp.utils;
 
-import com.motian.crp.constant.DataType;
 import com.motian.crp.dao.data.ClazzCourseData;
+import com.motian.crp.dao.manager.ClazzChapterManager;
+import com.motian.crp.service.ClazzChapterResourcesService;
 import com.motian.crp.service.ClazzChapterService;
 import com.motian.crp.service.ClazzCourseService;
 import com.motian.crp.service.QuestionBankService;
 import com.motian.crp.service.ResourceService;
 import com.motian.crp.service.StudentClazzCourseInfoService;
 import com.motian.crp.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,7 @@ import static com.motian.crp.constant.DataType.UserType.TEACHER;
  * @Author: motian
  * @Email: motian@xiyoulinux.org
  */
+@Slf4j
 @Component
 public class CrpTestUtils {
     @Autowired
@@ -30,37 +33,30 @@ public class CrpTestUtils {
     @Autowired
     private ClazzChapterService clazzChapterService;
     @Autowired
+    private ClazzChapterManager clazzChapterManager;
+    @Autowired
     private StudentClazzCourseInfoService studentClazzCourseInfoService;
     @Autowired
     private QuestionBankService questionBankService;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private ClazzChapterResourcesService clazzChapterResourcesService;
 
     @PostConstruct
     public void init() throws Exception {
         // 创建管理员信息
-        initAdmin("1");
+        initAdmin("admin");
         // 创建老师与课程信息
-        initTeacher("2");
+        initTeacher("765885195@qq.com");
         // 创建学生与课程信息
-        initStudent("3");
+        initStudent("3@qq.com");
+        // 创建学生与课程信息
+        initStudent("4@qq.com");
         // 创建问题数据
-
-        initQuestion("2");
-        // 创建资源
-        initResource("2");
+        initQuestion("765885195@qq.com");
     }
 
-    private void initResource(String value) {
-        resourceService.insert("资源1", value,
-                DataType.ResourceType.VIDEO, "/disk/1");
-        resourceService.insert("资源2", value,
-                DataType.ResourceType.AUDIO, "/disk/2");
-        resourceService.insert("资源3", value,
-                DataType.ResourceType.LINK, "/disk/3");
-        resourceService.insert("资源4", value,
-                DataType.ResourceType.DOCUMENT, "/disk/4");
-    }
 
     private void initAdmin(String value) {
         userService.registered(value, value, value, ADMINISTRATOR.code);
@@ -74,24 +70,34 @@ public class CrpTestUtils {
     private void initTeacher(String value) throws Exception {
         // 老师
         userService.registered(value, value, value, TEACHER.code);
-        // 学生1
-        userService.registered(value + "1", value + "1", value + "1", STUDENTS.code);
-        // 学生1
-        userService.registered(value + "2", value + "2", value + "2", STUDENTS.code);
 
         // 课程
-        clazzCourseService.insert(value, "测试课程" + value, 10);
+        clazzCourseService.insert(value, "JAVA", 50);
         ClazzCourseData clazzCourseData1 = clazzCourseService
-                .getByTeacherIdAndClazzCourseName(value, "测试课程" + value);
+                .getByTeacherIdAndClazzCourseName(value, "JAVA");
+
         // 章节
         clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
-                1, clazzCourseData1.getClazzCourseName() + "章节1");
+                1, "第一章:总体框架");
         clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
-                2, clazzCourseData1.getClazzCourseName() + "章节2");
+                2, "第二章:ArrayList详细介绍");
+        clazzChapterService.insert(clazzCourseData1.getClazzCourseId(),
+                3, "第三章:Map架构");
 
-        // 参加课程
-        studentClazzCourseInfoService.insert(value + "1", clazzCourseData1.getClazzCourseId());
-        studentClazzCourseInfoService.insert(value + "2", clazzCourseData1.getClazzCourseId());
+
+           // 课程
+        clazzCourseService.insert(value, "C++", 200);
+        ClazzCourseData clazzCourseData2= clazzCourseService
+                .getByTeacherIdAndClazzCourseName(value, "C++");
+
+        // 章节
+        clazzChapterService.insert(clazzCourseData2.getClazzCourseId(),
+                1, "第一章:认识C");
+        clazzChapterService.insert(clazzCourseData2.getClazzCourseId(),
+                2, "第二章:学习C");
+        clazzChapterService.insert(clazzCourseData2.getClazzCourseId(),
+                3, "第三章:练习C");
+
     }
 
     private void initQuestion(String teacherId) {

@@ -43,6 +43,26 @@ public class StudentClazzCourseInfoController {
         return model;
     }
 
+    @PostMapping(value = "/delete")
+    public Map<String, Object> delete(
+            @RequestParam(value = "id") long id,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        Map<String, Object> model = Maps.newHashMap();
+        service.delete(id);
+        model.put(RESULT, Boolean.TRUE);
+        return model;
+    }
+
+
+    @RequestMapping(value = "/get")
+    public Map<String, Object> get(
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
+        Map<String, Object> model = Maps.newHashMap();
+        model.put("data", service.get((long) request.getSession().getAttribute("clazzCourseId")));
+        return CrpWebUtils.Model(model);
+    }
+
 
     @GetMapping(value = "/listAllByTeacherId")
     public Map<String, Object> listAllByTeacherId(

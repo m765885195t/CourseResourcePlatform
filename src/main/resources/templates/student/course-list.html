@@ -23,6 +23,10 @@
 
 <body>
 <div class="x-body">
+    <a class="layui-btn layui-btn-small"
+       style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">刷新</i></a>
     <div class="demoTable">
         搜索班课号：
         <div class="layui-inline">
@@ -87,11 +91,12 @@
                             data: {'clazzCourseId': data.clazzCourseId},
                             dataType: "json",
                             success: function (data) {
-                                if (data == null) {
+                                if (data.result === 0) {
                                     layer.msg("报名失败,已达人数上限", {icon: 5});
-                                } else {
+                                } else if (data.result === 1) {
+                                    layer.msg("已参加过此课程", {icon: 5});
+                                } else if (data.result === 2) {
                                     layer.msg("报名成功", {icon: 1});
-                                    layer.close(index);
                                 }
                             },
                             error: function () {

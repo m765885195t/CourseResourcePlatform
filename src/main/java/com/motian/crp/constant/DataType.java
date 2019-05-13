@@ -66,6 +66,8 @@ public class DataType {
         LINK(3),
 
         DOCUMENT(4),
+
+        PICTURE(5),
         ;
         public final int code;
 

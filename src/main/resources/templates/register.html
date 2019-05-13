@@ -42,8 +42,8 @@
         <hr class="hr15">
         <select name="type" lay-verify="required" id="type">
             <option value="">身份</option>
-            <option value="2">学生</option>
-            <option value="3">教师</option>
+            <option value="2">教师</option>
+            <option value="3">学生</option>
         </select>
         <hr class="hr20">
         <input value="注册" lay-submit lay-filter="register" style="width:100%;"
@@ -83,7 +83,7 @@
                         if (data.result === true) {
                             layer.alert("注册成功")
                         } else {
-                            layer.alert("用户名已存在")
+                            layer.alert("该用户已存在")
                         }
                     },
                     error: function () {

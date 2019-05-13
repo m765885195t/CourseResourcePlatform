@@ -11,6 +11,7 @@ public interface CrpConst {
     interface ProjectStructure {
         String BASE_PACKAGE_SPACE = "com.motian.crp";
         String INTERFACE_DOCUMENTATION = "com.motian.crp.web";
+        String DEFAULT_FILE_PATH = "G:\\tmp\\";
     }
 
     interface StatusField {

@@ -1,12 +1,13 @@
 package com.motian.crp.web;
 
 import com.google.common.collect.Maps;
-import com.motian.crp.constant.DataType;
 import com.motian.crp.service.ResourceService;
 import com.motian.crp.utils.CrpServiceUtils;
 import com.motian.crp.utils.CrpWebUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
@@ -22,6 +24,7 @@ import static com.motian.crp.constant.CrpConst.StatusField.RESULT;
  * @Author: motian
  * @Email: motian@xiyoulinux.org
  */
+@Slf4j
 @RestController
 @RequestMapping("/resource")
 public class ResourceController {
@@ -34,29 +37,19 @@ public class ResourceController {
     }
 
     @PostMapping(value = "/upload")
-    public Map<String, Object> upload(
-            @RequestParam(value = "resourceName") String resourceName,
-            @RequestParam(value = "committer") String committer,
-            @RequestParam(value = "resourceType") int resourceType,
-            @RequestParam(value = "resourceUri") String resourceUri,
-            HttpServletRequest request, HttpServletResponse response) {
-
+    public Map<String, Object> upload(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> model = Maps.newHashMap();
-        service.insert(resourceName, committer,
-                DataType.ResourceType.getType(resourceType).get(), resourceUri);
+        service.upload(request, response);
         model.put(RESULT, Boolean.TRUE);
-        return model;
+        return CrpWebUtils.Model(model);
     }
 
-    @PostMapping(value = "/download")
-    public Map<String, Object> download(
-            @RequestParam(value = "id") long id,
-            HttpServletRequest request, HttpServletResponse response) {
 
-        Map<String, Object> model = Maps.newHashMap();
-        service.download(id);
-        model.put(RESULT, Boolean.TRUE);
-        return model;
+    @RequestMapping(value = "/download/{path}/{clazzChapterId}")
+    public void download(@PathVariable(name = "path") long path,
+                         @PathVariable(name = "clazzChapterId") long clazzChapterId,
+                         HttpServletRequest request, HttpServletResponse response) throws IOException {
+        service.download(request, response, path, clazzChapterId);
     }
 
 
@@ -68,6 +61,15 @@ public class ResourceController {
         return model;
     }
 
+    @PostMapping(value = "/update")
+    public Map<String, Object> update(@RequestParam(value = "id") long resourceId,
+                                      @RequestParam(value = "resourceName") String resourceName,
+                                      HttpServletRequest request, HttpServletResponse response) {
+        Map<String, Object> model = Maps.newHashMap();
+        model.put(RESULT, service.update(CrpServiceUtils.getUserId(request),
+                resourceId, resourceName));
+        return model;
+    }
 
     @GetMapping(value = "/listAll")
     public Map<String, Object> listAll(
@@ -81,5 +83,10 @@ public class ResourceController {
         model.put("data", service.listAll(CrpServiceUtils.getUserId(request),
                 resourceId, resourceName, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
+    }
+
+    @GetMapping(value = "/selectResource")
+    public Map<Long, String> selectResource(HttpServletRequest request, HttpServletResponse response) {
+        return service.selectResource();
     }
 }

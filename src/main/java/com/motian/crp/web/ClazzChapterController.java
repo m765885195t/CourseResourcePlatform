@@ -87,4 +87,11 @@ public class ClazzChapterController {
                 clazzCourseId, clazzCourseName, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
+
+    @GetMapping(value = "/selectClazzCourseChapter")
+    public Map<Long, String> selectClazzCourseChapter(
+            @RequestParam(value = "clazzCourseId", required = false, defaultValue = "-1") long clazzCourseId,
+            HttpServletRequest request, HttpServletResponse response) {
+        return service.selectClazzCourseChapter(clazzCourseId);
+    }
 }

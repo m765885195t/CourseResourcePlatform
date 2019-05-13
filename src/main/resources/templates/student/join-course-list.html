@@ -23,6 +23,10 @@
 
 <body>
 <div class="x-body">
+    <a class="layui-btn layui-btn-small"
+       style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">刷新</i></a>
     <div class="demoTable">
         搜索班课号：
         <div class="layui-inline">
@@ -40,7 +44,10 @@
 </body>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs"
+       lay-event="study">进入学习</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs"
+       lay-event="del">退课</a>
 </script>
 
 
@@ -71,9 +78,34 @@
                     {title: '加入班课的顺序', sort: true, field: 'sequence'},
                     {title: '添加时间', sort: true, field: 'addTime'},
                     {title: '更新时间', sort: true, field: 'updateTime'},
+                    {title: '操作', toolbar: '#barDemo'}
                 ]]
             });
 
+            //监听行工具(里面为表格的 lay-filter属性)
+            table.on('tool(clazz_course_table)', function (obj) {
+                var data = obj.data;
+                if (obj.event === 'study') {
+                    window.location.href = "/student/studyList?clazzCourseId=" + data.id;
+                } else if (obj.event === 'del') {
+                    layer.confirm('确定退课？', function (index) {
+                        $.ajax({
+                            url: '/studentClazzCourseInfo/delete',
+                            type: "POST",
+                            data: {'id': data.id},
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.result === true) {
+                                    layer.msg("退课成功", {icon: 1});
+                                }
+                            },
+                            error: function () {
+                                alert(data);
+                            }
+                        });
+                    });
+                }
+            });
 
             // 搜索数据
             var $ = layui.$, active = {

@@ -23,6 +23,10 @@
 
 <body>
 <div class="x-body">
+    <a class="layui-btn layui-btn-small"
+       style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">刷新</i></a>
     <div class="demoTable">
         搜索资源ID/资源名：
         <div class="layui-inline">
@@ -64,10 +68,11 @@
                 limits: [10, 20, 50, 100],
                 cols: [[
                     {type: "checkbox", fixed: "left", width: 50},
-                    {title: '资源ID', field: 'id', width: 70},
+                    {title: '资源ID', field: 'id', sort: true, width: 70},
                     {
                         title: '资源名称',
                         field: 'resourceName',
+                        sort: true,
                         width: 70,
                         edit: 'text'
                     },
@@ -109,6 +114,32 @@
                 }
             });
 
+            //监听单元格编辑
+            table.on('edit(resource_bank_table)', function (obj) {
+                var value = obj.value //得到修改后的值
+                    , data = obj.data //得到所在行所有键值
+                    , field = obj.field; //得到字段
+                $.ajax({
+                    url: '/resource/update',
+                    type: "POST",
+                    data: {
+                        'id': data.id,
+                        'resourceName': value
+                    },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.result === true) {
+                            layer.msg("资源名名更新成功", {icon: 1});
+                        } else {
+                            layer.msg("资源名名更新失败,已存在同名资源", {icon: 5});
+                        }
+                    },
+                    error: function () {
+                        alert(data);
+                    }
+                });
+            });
+
             // 搜索数据
             var $ = layui.$, active = {
                 reload: function () {
@@ -121,6 +152,7 @@
                         }
                         , where: {
                             resourceId: demoReload.val(),
+                            resourceName: demoReload.val(),
                         }
                     });
                 }

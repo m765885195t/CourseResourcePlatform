@@ -1,6 +1,5 @@
 package com.motian.crp.dao.data;
 
-import com.motian.crp.constant.DataType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,8 +21,11 @@ public class ResourceLibraryData extends BaseData {
     @ApiModelProperty(value = "资源名称")
     private String resourceName;
 
+    @ApiModelProperty(value = "资源真实名称")
+    private String resourceRealName;
+
     @ApiModelProperty(value = "资源类型")
-    private DataType.ResourceType resourceType;
+    private String resourceType;
 
     @ApiModelProperty(value = "提交用户")
     private String committer;

@@ -5,6 +5,7 @@ import com.motian.crp.intercepors.CrpInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -24,6 +25,11 @@ public class WebConfigurer implements WebMvcConfigurer {
     }
 
     @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/videos/**").addResourceLocations("file:G:\\tmp\\");
+    }
+
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //排除不被拦截的资源
         List<String> excludePaths = Lists.newArrayList();
@@ -31,6 +37,7 @@ public class WebConfigurer implements WebMvcConfigurer {
         excludePaths.add("/layui/**");
         excludePaths.add("/X-admin/**");
         excludePaths.add("/static/**");
+        excludePaths.add("/videos/**");
 
         //登录
         excludePaths.add("/");

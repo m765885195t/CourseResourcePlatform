@@ -1,6 +1,7 @@
 package com.motian.crp.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.motian.crp.dao.data.ClazzChapterData;
 import com.motian.crp.dao.data.ClazzCourseData;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,6 +54,7 @@ public class ClazzChapterService {
         clazzChapterManager.save(new ClazzChapterData()
                 .setClazzCourseId(clazzCourseData.get().getClazzCourseId())
                 .setSequence(order)
+                .setClazzCourseName(clazzCourseData.get().getClazzCourseName())
                 .setClazzChapterName(clazzChapterName)
         );
         return true;
@@ -135,4 +138,18 @@ public class ClazzChapterService {
         return dataList;
     }
 
+    public Map<Long, String> selectClazzCourseChapter(long clazzCourseId) {
+        Map<Long, String> map = Maps.newHashMap();
+        if (clazzCourseId == 0) {
+            clazzChapterManager.findAll().forEach(o -> {
+                map.put(o.getId(), o.getClazzChapterName());
+            });
+        } else {
+            clazzChapterManager.getByClazzCourseId(clazzCourseId).forEach(o -> {
+                map.put(o.getId(), o.getClazzChapterName());
+            });
+        }
+
+        return map;
+    }
 }

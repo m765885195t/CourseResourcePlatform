@@ -26,6 +26,9 @@ public class ClazzChapterData extends BaseData {
     @ApiModelProperty(value = "班课Id")
     private long clazzCourseId;
 
+    @ApiModelProperty(value = "班课名")
+    private String clazzCourseName;
+
     @ApiModelProperty(value = "所在班课的下标")
     private int sequence;
 

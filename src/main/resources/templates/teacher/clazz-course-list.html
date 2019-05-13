@@ -23,6 +23,10 @@
 
 <body>
 <div class="x-body">
+    <a class="layui-btn layui-btn-small"
+       style="line-height:1.6em;margin-top:3px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">刷新</i></a>
     <div class="demoTable">
         搜索班课号：
         <div class="layui-inline">
@@ -64,7 +68,7 @@
                 limits: [10, 20, 50, 100],
                 cols: [[
                     {type: "checkbox", fixed: "left", width: 50},
-                    {title: '序号', field: 'id', width: 70},
+                    {title: '序号', field: 'id', sort: true, width: 70},
                     {title: '班课号', field: 'clazzCourseId', sort: true},
                     {
                         title: '班课名',
