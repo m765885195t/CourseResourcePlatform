@@ -44,8 +44,9 @@
 </body>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="download">下载资源</a>
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="download">本节课件</a>
     <a class="layui-btn  layui-btn-xs" lay-event="video">观看视频</a>
+    <a class="layui-btn  layui-btn-xs" lay-event="question">章节测验</a>
 </script>
 
 
@@ -101,6 +102,16 @@
                         layer.msg("该章节没有视频")
                     } else {
                         window.location.href = "/watchVideo/" + videoResourceId + "?clazzChapterId=" + clazzChapterId;
+                    }
+                }else if (obj.event === 'question') {
+                    var questionResourceId = data.questionResourceId;
+                    var questionResourceExist = data.questionResourceExist;
+                    var clazzChapterId = data.clazzChapterId;
+
+                    if (questionResourceExist === undefined || questionResourceExist === false) {
+                        layer.msg("该章节没有测验")
+                    } else {
+                        window.location.href = "/question/" + questionResourceId + "?clazzChapterId=" + clazzChapterId;
                     }
                 }
             });

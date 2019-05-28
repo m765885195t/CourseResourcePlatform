@@ -66,7 +66,6 @@ public class ClazzChapterResourcesService {
         return true;
     }
 
-
     public void delete(long id) {
         manager.findById(id).ifPresent(manager::delete);
     }
@@ -109,4 +108,5 @@ public class ClazzChapterResourcesService {
                 .filter(o -> StringUtils.isBlank(resourceLibraryName) || o.getResourceLibraryName().equals(resourceLibraryName))
                 .collect(Collectors.toList());
     }
+
 }

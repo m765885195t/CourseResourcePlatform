@@ -44,6 +44,8 @@
 </body>
 
 <script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs"
+       lay-event="question">疑问列表</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
@@ -109,8 +111,8 @@
                             }
                         });
                     });
-                } else if (obj.event === 'edit') {
-                    layer.msg('ID：' + data.id + ' 的编辑操作');
+                } else if (obj.event === 'question') {
+                    window.location.href = "/teacher/question?clazzCourseId=" + data.id;
                 }
             });
 

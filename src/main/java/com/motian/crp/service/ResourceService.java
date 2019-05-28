@@ -213,11 +213,21 @@ public class ResourceService {
         return true;
     }
 
-    public Map<Long, String> selectResource() {
+    public Map<Long, String> selectVideoResource() {
         Map<Long, String> map = Maps.newHashMap();
-        manager.findAll().forEach(o -> {
-            map.put(o.getId(), o.getResourceName());
-        });
+        manager.findAll()
+                .stream()
+                .filter(o -> CrpServiceUtils.isVideo(o.getResourceType()))
+                .forEach(o -> map.put(o.getId(), o.getResourceName()));
+        return map;
+    }
+
+    public Map<Long, String> selectDocResource() {
+        Map<Long, String> map = Maps.newHashMap();
+        manager.findAll()
+                .stream()
+                .filter(o -> !CrpServiceUtils.isVideo(o.getResourceType()))
+                .forEach(o -> map.put(o.getId(), o.getResourceName()));
         return map;
     }
 }

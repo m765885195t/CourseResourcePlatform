@@ -103,4 +103,26 @@ public class ClazzCourseController {
         model.put("data", service.listAll(clazzCourseId, clazzCourseName, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
+
+    @PostMapping(value = "/submit")
+    public Map<String, Object> submit(
+            @RequestParam(value = "text") String[] text,
+            @RequestParam(value = "courseId") long courseId,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        Map<String, Object> model = Maps.newHashMap();
+        model.put(RESULT, service.save(courseId, text));
+        return model;
+    }
+
+    @PostMapping(value = "/updateQuestion")
+    public Map<String, Object> updateQuestion(
+            @RequestParam(value = "id") long id,
+            @RequestParam(value = "results") String results,
+            HttpServletRequest request, HttpServletResponse response) {
+
+        Map<String, Object> model = Maps.newHashMap();
+        model.put(RESULT, service.updateQuestion(id, results));
+        return model;
+    }
 }

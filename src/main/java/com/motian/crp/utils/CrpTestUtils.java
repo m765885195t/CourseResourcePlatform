@@ -2,6 +2,7 @@ package com.motian.crp.utils;
 
 import com.motian.crp.dao.data.ClazzCourseData;
 import com.motian.crp.dao.manager.ClazzChapterManager;
+import com.motian.crp.dao.manager.ClazzCourseManager;
 import com.motian.crp.service.ClazzChapterResourcesService;
 import com.motian.crp.service.ClazzChapterService;
 import com.motian.crp.service.ClazzCourseService;
@@ -31,6 +32,8 @@ public class CrpTestUtils {
     @Autowired
     private ClazzCourseService clazzCourseService;
     @Autowired
+    private ClazzCourseManager clazzCourseManager;
+    @Autowired
     private ClazzChapterService clazzChapterService;
     @Autowired
     private ClazzChapterManager clazzChapterManager;
@@ -46,15 +49,14 @@ public class CrpTestUtils {
     @PostConstruct
     public void init() throws Exception {
         // 创建管理员信息
-        initAdmin("admin");
+//        initAdmin("admin");
+        initAdmin("1");
         // 创建老师与课程信息
-        initTeacher("765885195@qq.com");
-        // 创建学生与课程信息
-        initStudent("3@qq.com");
-        // 创建学生与课程信息
-        initStudent("4@qq.com");
+//        initTeacher("765885195@qq.com");
+        initTeacher("2");
+        initStudent("3");
         // 创建问题数据
-        initQuestion("765885195@qq.com");
+//        initQuestion("765885195@qq.com");
     }
 
 
@@ -85,9 +87,9 @@ public class CrpTestUtils {
                 3, "第三章:Map架构");
 
 
-           // 课程
+        // 课程
         clazzCourseService.insert(value, "C++", 200);
-        ClazzCourseData clazzCourseData2= clazzCourseService
+        ClazzCourseData clazzCourseData2 = clazzCourseService
                 .getByTeacherIdAndClazzCourseName(value, "C++");
 
         // 章节
@@ -100,8 +102,4 @@ public class CrpTestUtils {
 
     }
 
-    private void initQuestion(String teacherId) {
-        questionBankService.insert(teacherId, "content1");
-        questionBankService.insert(teacherId, "content2");
-    }
 }

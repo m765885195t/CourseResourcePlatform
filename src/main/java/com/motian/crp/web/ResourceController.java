@@ -85,8 +85,14 @@ public class ResourceController {
         return CrpWebUtils.Model(model);
     }
 
-    @GetMapping(value = "/selectResource")
-    public Map<Long, String> selectResource(HttpServletRequest request, HttpServletResponse response) {
-        return service.selectResource();
+    @GetMapping(value = "/selectVideoResource")
+    public Map<Long, String> selectVideoResource(HttpServletRequest request, HttpServletResponse response) {
+        return service.selectVideoResource();
+
+    }
+
+    @GetMapping(value = "/selectDocResource")
+    public Map<Long, String> selectDocResource(HttpServletRequest request, HttpServletResponse response) {
+        return service.selectDocResource();
     }
 }

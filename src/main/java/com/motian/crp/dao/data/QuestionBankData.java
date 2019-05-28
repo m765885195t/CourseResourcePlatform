@@ -9,6 +9,7 @@ import lombok.experimental.Accessors;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.List;
 
 @Data
 @Entity
@@ -23,4 +24,7 @@ public class QuestionBankData extends BaseData {
 
     @ApiModelProperty(value = "题目内容")
     private String content;
+
+    @ApiModelProperty(value = "题目名称")
+    private String questionName;
 }

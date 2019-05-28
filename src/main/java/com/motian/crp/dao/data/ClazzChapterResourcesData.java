@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -35,4 +36,5 @@ public class ClazzChapterResourcesData extends BaseData {
 
     @ApiModelProperty(value = "true视频资源/false非视频")
     private boolean videoFlag;
+
 }

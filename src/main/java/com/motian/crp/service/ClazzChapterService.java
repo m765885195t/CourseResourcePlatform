@@ -72,6 +72,15 @@ public class ClazzChapterService {
         return clazzChapterManager.save(data.get());
     }
 
+    public ClazzChapterData updateQuestionId(long id, long questionId) throws Exception {
+        Optional<ClazzChapterData> data = clazzChapterManager.findById(id);
+        if (!data.isPresent()) {
+            throw new Exception("The ClazzChapterData does not exist. id=" + id);
+        }
+        data.get().setQuestionId(questionId);
+        return clazzChapterManager.save(data.get());
+    }
+
     public void delete(long id) {
         clazzChapterManager.findById(id).ifPresent(clazzChapterManager::delete);
     }
@@ -138,12 +147,16 @@ public class ClazzChapterService {
         return dataList;
     }
 
-    public Map<Long, String> selectClazzCourseChapter(long clazzCourseId) {
+    public Map<Long, String> selectClazzCourseChapter(String userId, long clazzCourseId) {
         Map<Long, String> map = Maps.newHashMap();
         if (clazzCourseId == 0) {
-            clazzChapterManager.findAll().forEach(o -> {
-                map.put(o.getId(), o.getClazzChapterName());
-            });
+            clazzCourseManager.getByTeacherId(userId)
+                    .forEach(c -> clazzChapterManager
+                            .findAll()
+                            .stream()
+                            .filter(o -> o.getClazzCourseId() == c.getClazzCourseId())
+                            .forEach(o -> map.put(o.getId(), o.getClazzChapterName()))
+                    );
         } else {
             clazzChapterManager.getByClazzCourseId(clazzCourseId).forEach(o -> {
                 map.put(o.getId(), o.getClazzChapterName());

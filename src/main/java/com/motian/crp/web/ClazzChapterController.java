@@ -56,6 +56,17 @@ public class ClazzChapterController {
         return model;
     }
 
+    @PostMapping(value = "/updateQuestionId")
+    public Map<String, Object> updateQuestionId(
+            @RequestParam(value = "id") long id,
+            @RequestParam(value = "questionId", required = false, defaultValue = "-1")
+                    String questionId) throws Exception {
+        Map<String, Object> model = Maps.newHashMap();
+        service.updateQuestionId(id, Long.parseLong(questionId));
+        model.put(RESULT, Boolean.TRUE);
+        return model;
+    }
+
     @PostMapping(value = "/delete")
     public Map<String, Object> delete(@RequestParam(value = "id") long id) {
 
@@ -92,6 +103,6 @@ public class ClazzChapterController {
     public Map<Long, String> selectClazzCourseChapter(
             @RequestParam(value = "clazzCourseId", required = false, defaultValue = "-1") long clazzCourseId,
             HttpServletRequest request, HttpServletResponse response) {
-        return service.selectClazzCourseChapter(clazzCourseId);
+        return service.selectClazzCourseChapter(CrpServiceUtils.getUserId(request), clazzCourseId);
     }
 }

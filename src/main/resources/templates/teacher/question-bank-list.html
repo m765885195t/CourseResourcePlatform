@@ -23,10 +23,7 @@
 
 <body>
 <div class="x-body">
-    <a class="layui-btn layui-btn-small"
-       style="line-height:1.6em;margin-top:3px;float:right"
-       href="javascript:location.replace(location.href);" title="刷新">
-        <i class="layui-icon" style="line-height:30px">刷新</i></a>
+
     <div class="demoTable">
         搜索题目ID：
         <div class="layui-inline">
@@ -68,11 +65,11 @@
                 limits: [10, 20, 50, 100],
                 cols: [[
                     {type: "checkbox", fixed: "left", width: 50},
-                    {title: '题目ID', field: 'id', sort: true,width: 70},
-                    {title: '题目内容', sort: true, field: 'content'},
+                    {title: '测验ID', field: 'id', sort: true, width: 70},
+                    {title: '测验内容', field: 'content', sort: true, width: 70},
+                    {title: '测验名称', sort: true, field: 'questionName'},
                     {title: '创建者id', field: 'teacherId', sort: true},
                     {title: '添加时间', sort: true, field: 'addTime'},
-                    {title: '更新时间', sort: true, field: 'updateTime'},
                     {title: '操作', toolbar: '#barDemo'}
                 ]]
             });

@@ -40,6 +40,8 @@ public class StudentClazzCourseInfoService {
     private ClazzChapterResourcesService clazzChapterResourcesService;
     @Autowired
     private ResourceService resourceService;
+    @Autowired
+    private QuestionBankService questionBankService;
 
     @Autowired
     public StudentClazzCourseInfoService(
@@ -118,6 +120,13 @@ public class StudentClazzCourseInfoService {
                         model.put("videoResourceId", resourceService.get(clazzChapterResourcesData.get().getResourceLibraryId()).getId());
                     } else {
                         model.put("videoResourceExist", Boolean.FALSE);
+                    }
+
+                    if (o.getQuestionId() > 0) {
+                        model.put("questionResourceExist", Boolean.TRUE);
+                        model.put("questionResourceId", questionBankService.get(o.getQuestionId()).getId());
+                    } else {
+                        model.put("questionResourceExist", Boolean.FALSE);
                     }
 
                     model.put("clazzCourseName", clazzCourseManager.getByClazzCourseId(o.getClazzCourseId()).get().getClazzCourseName());

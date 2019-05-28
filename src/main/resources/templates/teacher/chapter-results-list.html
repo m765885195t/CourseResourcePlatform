@@ -28,7 +28,7 @@
        href="javascript:location.replace(location.href);" title="刷新">
         <i class="layui-icon" style="line-height:30px">刷新</i></a>
     <div class="demoTable">
-        搜索班课号：
+        搜索班课id：
         <div class="layui-inline">
             <input class="layui-input" name="clazzCourseId" id="demoReload"
                    autocomplete="off">
@@ -44,12 +44,7 @@
 </body>
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs"
-       lay-event="study">进入学习</a>
-    <a class="layui-btn layui-btn-primary layui-btn-xs"
-       lay-event="question">疑问列表</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs"
-       lay-event="del">退课</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 
@@ -64,7 +59,7 @@
             table.render({
                 elem: '#clazz_course_table',//绑定table id
                 cellMinWidth: 80,
-                url: '/studentClazzCourseInfo/listAll',
+                url: '/studentClazzChapterInfo/listByTeacherId',
                 id: 'list',
                 even: true,
                 toolbar: '#toolbarDemo',
@@ -73,40 +68,13 @@
                 limits: [10, 20, 50, 100],
                 cols: [[
                     {type: "checkbox", fixed: "left", width: 50},
-                    {title: '序号', field: 'id', width: 70},
-                    {title: '班课号', field: 'clazzCourseId', sort: true},
+                    {title: '学生id', sort: true, field: 'studentId'},
+                    {title: '班课id', field: 'clazzCourseId', sort: true},
                     {title: '班课名', sort: true, field: 'clazzCourseName'},
-                    {title: '创建老师', sort: true, field: 'teacherName'},
-                    {title: '加入班课的顺序', sort: true, field: 'sequence'},
-                    {title: '操作', toolbar: '#barDemo'}
+                    {title: '章节id', sort: true, field: 'clazzChapterId'},
+                    {title: '章节名', sort: true, field: 'clazzChapterName'},
+                    {title: '成绩', sort: true, field: 'results'}
                 ]]
-            });
-
-            //监听行工具(里面为表格的 lay-filter属性)
-            table.on('tool(clazz_course_table)', function (obj) {
-                var data = obj.data;
-                if (obj.event === 'study') {
-                    window.location.href = "/student/studyList?clazzCourseId=" + data.id;
-                } else if (obj.event === 'del') {
-                    layer.confirm('确定退课？', function (index) {
-                        $.ajax({
-                            url: '/studentClazzCourseInfo/delete',
-                            type: "POST",
-                            data: {'id': data.id},
-                            dataType: "json",
-                            success: function (data) {
-                                if (data.result === true) {
-                                    layer.msg("退课成功", {icon: 1});
-                                }
-                            },
-                            error: function () {
-                                alert(data);
-                            }
-                        });
-                    });
-                } else if (obj.event === 'question') {
-                    window.location.href = "/student/teacher?clazzCourseId=" +  data.id;
-                }
             });
 
             // 搜索数据
@@ -121,7 +89,6 @@
                         }
                         , where: {
                             clazzCourseId: demoReload.val(),
-                            clazzCourseName: demoReload.val(),
                         }
                     });
                 }

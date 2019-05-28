@@ -3,6 +3,7 @@ package com.motian.crp.service;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.motian.crp.constant.CrpConst;
 import com.motian.crp.dao.data.ClazzChapterData;
 import com.motian.crp.dao.data.ClazzCourseData;
 import com.motian.crp.dao.data.UserData;
@@ -165,4 +166,23 @@ public class ClazzCourseService {
         return tem;
     }
 
+    public boolean save(long courseId, String[] text) {
+        ClazzCourseData clazzCourseData = manager.getOne(courseId);
+        clazzCourseData.setAnswer(StringUtils.join(text, CrpConst.SEPARATOR));
+        manager.save(clazzCourseData);
+        return true;
+    }
+
+    public boolean updateQuestion(long id, String results) {
+        ClazzCourseData clazzCourseData = manager.getOne(id);
+        if (clazzCourseData.getQuestion().isEmpty()) {
+            clazzCourseData.setQuestion(results);
+            clazzCourseData.setAnswer("  ");
+        } else {
+            clazzCourseData.setQuestion(clazzCourseData.getQuestion() + CrpConst.SEPARATOR + results);
+            clazzCourseData.setAnswer(clazzCourseData.getAnswer() +CrpConst.SEPARATOR + "  ");
+        }
+        manager.save(clazzCourseData);
+        return true;
+    }
 }

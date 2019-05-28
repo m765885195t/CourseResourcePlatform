@@ -42,7 +42,6 @@ public class ClazzChapterResourcesController {
         return model;
     }
 
-
     @PostMapping(value = "/delete")
     public Map<String, Object> delete(@RequestParam(value = "id") long id) {
         service.delete(id);
