@@ -1,6 +1,5 @@
 package com.motian.crp.dao.manager;
 
-import com.motian.crp.dao.data.ClazzCourseData;
 import com.motian.crp.dao.data.QuestionBankData;
 import org.springframework.data.jpa.repository.JpaRepository;
 

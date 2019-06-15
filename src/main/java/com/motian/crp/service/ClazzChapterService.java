@@ -147,7 +147,7 @@ public class ClazzChapterService {
         return dataList;
     }
 
-    public Map<Long, String> selectClazzCourseChapter(String userId, long clazzCourseId) {
+        public Map<Long, String> selectClazzCourseChapter(String userId, long clazzCourseId) {
         Map<Long, String> map = Maps.newHashMap();
         if (clazzCourseId == 0) {
             clazzCourseManager.getByTeacherId(userId)
