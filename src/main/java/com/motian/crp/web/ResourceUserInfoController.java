@@ -1,9 +1,10 @@
 package com.motian.crp.web;
 
 import com.google.common.collect.Maps;
-import com.motian.crp.service.StudyService;
+import com.motian.crp.service.ResourceUserInfoService;
 import com.motian.crp.utils.CrpServiceUtils;
 import com.motian.crp.utils.CrpWebUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,17 +18,16 @@ import java.util.Map;
  * @Author: motian
  * @Email: motian@xiyoulinux.org
  */
+@Slf4j
 @RestController
-@RequestMapping("/study")
-public class StudyController {
-
-    private final StudyService service;
+@RequestMapping("/resourceUserInfo")
+public class ResourceUserInfoController {
+    private final ResourceUserInfoService service;
 
     @Autowired
-    public StudyController(StudyService service) {
+    public ResourceUserInfoController(ResourceUserInfoService service) {
         this.service = service;
     }
-
     @RequestMapping(value = "/listByTeacherId")
     public Map<String, Object> listByTeacherId(
             @RequestParam(value = "clazzCourseId", required = false, defaultValue = "-1") long clazzCourseId,

@@ -38,11 +38,9 @@ public class ClazzChapterResourcesController {
             @RequestParam(value = "resourceLibraryId") long resourceLibraryId) {
 
         Map<String, Object> model = Maps.newHashMap();
-        service.insert(clazzChapterId, resourceLibraryId);
-        model.put(RESULT, Boolean.TRUE);
+        model.put(RESULT, service.insert(clazzChapterId, resourceLibraryId));
         return model;
     }
-
 
     @PostMapping(value = "/delete")
     public Map<String, Object> delete(@RequestParam(value = "id") long id) {
@@ -63,13 +61,14 @@ public class ClazzChapterResourcesController {
 
     @GetMapping(value = "/listAll")
     public Map<String, Object> listAll(
-            @RequestParam(value = "clazzChapterId") long clazzChapterId,
+            @RequestParam(value = "clazzChapterName", required = false, defaultValue = "") String clazzChapterName,
+            @RequestParam(value = "resourceLibraryName", required = false, defaultValue = "") String resourceLibraryName,
             @RequestParam(value = "pageNumber", required = false, defaultValue = "1") int pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "50") int pageSize,
             HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> model = Maps.newHashMap();
-        model.put("data", service.listAll(clazzChapterId, pageNumber, pageSize));
+        model.put("data", service.listAll(clazzChapterName, resourceLibraryName, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
     }
 }

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -35,4 +36,10 @@ public class ClazzCourseData extends BaseData {
 
     @ApiModelProperty(value = "容纳人数")
     private int galleryful;
+
+    @ApiModelProperty(value = "提问列表")
+    private String question = StringUtils.EMPTY;
+
+    @ApiModelProperty(value = "回答列表")
+    private String answer = StringUtils.EMPTY;
 }

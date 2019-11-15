@@ -35,6 +35,9 @@ public class StudentClazzCourseInfoData extends BaseData {
     @ApiModelProperty(value = "创建老师")
     private String teacherName;
 
+    @ApiModelProperty(value = "创建老师id")
+    private String teacherId;
+
     @ApiModelProperty(value = "加入班课的顺序")
     private int sequence;
 }

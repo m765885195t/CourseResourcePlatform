@@ -19,15 +19,12 @@ import javax.persistence.Table;
 @Entity
 @NoArgsConstructor
 @Accessors(chain = true)
-@Table(name = "crp_study_data")
+@Table(name = "crp_resource_user_info_data")
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "StudyData", description = "学生学习信息")
-public class StudyData extends BaseData {
-    @ApiModelProperty(value = "学生id")
-    private String studentId;
-
-    @ApiModelProperty(value = "老师id")
-    private String teacherId;
+@ApiModel(value = "ResourceUserInfoData", description = "资源使用信息")
+public class ResourceUserInfoData extends BaseData {
+    @ApiModelProperty(value = "创建者id")
+    private String creatorId;
 
     @ApiModelProperty(value = "课程id")
     private long clazzCourseId;
@@ -43,7 +40,4 @@ public class StudyData extends BaseData {
 
     @ApiModelProperty(value = "观看次数")
     private long watchNumber;
-
-    @ApiModelProperty(value = "总排名")
-    private long ranking;
 }

@@ -1,6 +1,7 @@
 package com.motian.crp.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.motian.crp.dao.data.ClazzChapterData;
 import com.motian.crp.dao.data.ClazzCourseData;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,15 +39,22 @@ public class ClazzChapterService {
     }
 
     @Transactional
-    public boolean insert(String teacherId, String clazzCourseName, int order, String clazzChapterName) {
+    public boolean insert(long clazzCourseId, int order, String clazzChapterName) {
+        log.info("insert::clazzCourseId={},order={},clazzChapterName={}",
+                clazzCourseId, order, clazzChapterName);
         Optional<ClazzCourseData> clazzCourseData = clazzCourseManager
-                .getByTeacherIdAndClazzCourseName(teacherId, clazzCourseName);
+                .getByClazzCourseId(clazzCourseId);
         if (!clazzCourseData.isPresent()) {
+            return false;
+        }
+        if (clazzChapterManager.getByClazzCourseIdAndSequence(
+                clazzCourseData.get().getClazzCourseId(), order).isPresent()) {
             return false;
         }
         clazzChapterManager.save(new ClazzChapterData()
                 .setClazzCourseId(clazzCourseData.get().getClazzCourseId())
                 .setSequence(order)
+                .setClazzCourseName(clazzCourseData.get().getClazzCourseName())
                 .setClazzChapterName(clazzChapterName)
         );
         return true;
@@ -63,11 +72,20 @@ public class ClazzChapterService {
         return clazzChapterManager.save(data.get());
     }
 
+    public ClazzChapterData updateQuestionId(long id, long questionId) throws Exception {
+        Optional<ClazzChapterData> data = clazzChapterManager.findById(id);
+        if (!data.isPresent()) {
+            throw new Exception("The ClazzChapterData does not exist. id=" + id);
+        }
+        data.get().setQuestionId(questionId);
+        return clazzChapterManager.save(data.get());
+    }
+
     public void delete(long id) {
         clazzChapterManager.findById(id).ifPresent(clazzChapterManager::delete);
     }
 
-   public void deleteByClazzCourseId(long clazzCourseId) {
+    public void deleteByClazzCourseId(long clazzCourseId) {
         clazzChapterManager.deleteByClazzCourseId(clazzCourseId);
     }
 
@@ -129,4 +147,22 @@ public class ClazzChapterService {
         return dataList;
     }
 
+        public Map<Long, String> selectClazzCourseChapter(String userId, long clazzCourseId) {
+        Map<Long, String> map = Maps.newHashMap();
+        if (clazzCourseId == 0) {
+            clazzCourseManager.getByTeacherId(userId)
+                    .forEach(c -> clazzChapterManager
+                            .findAll()
+                            .stream()
+                            .filter(o -> o.getClazzCourseId() == c.getClazzCourseId())
+                            .forEach(o -> map.put(o.getId(), o.getClazzChapterName()))
+                    );
+        } else {
+            clazzChapterManager.getByClazzCourseId(clazzCourseId).forEach(o -> {
+                map.put(o.getId(), o.getClazzChapterName());
+            });
+        }
+
+        return map;
+    }
 }

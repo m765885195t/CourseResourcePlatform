@@ -35,14 +35,13 @@ public class ClazzChapterController {
 
     @PostMapping(value = "/insert")
     public Map<String, Object> insert(
-            @RequestParam(value = "clazzCourseName") String clazzCourseName,
+            @RequestParam(value = "clazzCourseId") long clazzCourseId,
             @RequestParam(value = "clazzCourseChapterOrder") int order,
             @RequestParam(value = "clazzChapterName") String clazzChapterName,
             HttpServletRequest request, HttpServletResponse response) {
 
         Map<String, Object> model = Maps.newHashMap();
-        model.put(RESULT, service.insert(CrpServiceUtils.getUserId(request),
-                clazzCourseName, order, clazzChapterName));
+        model.put(RESULT, service.insert(clazzCourseId, order, clazzChapterName));
         return model;
     }
 
@@ -53,6 +52,17 @@ public class ClazzChapterController {
             @RequestParam(value = "clazzCourseName", required = false, defaultValue = "") String clazzCourseName) throws Exception {
         Map<String, Object> model = Maps.newHashMap();
         service.update(id, clazzCourseName);
+        model.put(RESULT, Boolean.TRUE);
+        return model;
+    }
+
+    @PostMapping(value = "/updateQuestionId")
+    public Map<String, Object> updateQuestionId(
+            @RequestParam(value = "id") long id,
+            @RequestParam(value = "questionId", required = false, defaultValue = "-1")
+                    String questionId) throws Exception {
+        Map<String, Object> model = Maps.newHashMap();
+        service.updateQuestionId(id, Long.parseLong(questionId));
         model.put(RESULT, Boolean.TRUE);
         return model;
     }
@@ -87,5 +97,12 @@ public class ClazzChapterController {
         model.put("data", service.listAll(CrpServiceUtils.getUserId(request),
                 clazzCourseId, clazzCourseName, pageNumber, pageSize));
         return CrpWebUtils.Model(model);
+    }
+
+    @GetMapping(value = "/selectClazzCourseChapter")
+    public Map<Long, String> selectClazzCourseChapter(
+            @RequestParam(value = "clazzCourseId", required = false, defaultValue = "-1") long clazzCourseId,
+            HttpServletRequest request, HttpServletResponse response) {
+        return service.selectClazzCourseChapter(CrpServiceUtils.getUserId(request), clazzCourseId);
     }
 }

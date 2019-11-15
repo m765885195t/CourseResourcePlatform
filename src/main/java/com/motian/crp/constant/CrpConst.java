@@ -7,10 +7,12 @@ package com.motian.crp.constant;
 public interface CrpConst {
     int DEFAULT_RANDOM_RANGE_BYTES = 10;
     int NUMBER_RANDOM_RANGE_BYTES = 6;
+    String SEPARATOR = "=====";
 
     interface ProjectStructure {
         String BASE_PACKAGE_SPACE = "com.motian.crp";
         String INTERFACE_DOCUMENTATION = "com.motian.crp.web";
+        String DEFAULT_FILE_PATH = "G:\\tmp\\";
     }
 
     interface StatusField {
